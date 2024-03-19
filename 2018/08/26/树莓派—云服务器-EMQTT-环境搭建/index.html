@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="树莓派之 MQTT 搭建每天出门总怀疑自己灯没关、空调没关，晚上睡觉的时候躺下才意识到灯没关、然而开关却理我特别远，这我可接受不了 2333 ，所以产生了这种刚需🤣，这里记录一下搭建MQTT环境的过程。   搭建的两种方法 树莓派作为 MQTT 服务器，用花生壳映射端口( 6 块钱)可以供给外网访问，这个方法的话最便宜的方案吧，不过外网的端口是不固定的，如果被改变了就得打开花生壳管理器查看分配的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派|云服务器-MQTT环境搭建">
+<meta property="og:url" content="http://example.com/2018/08/26/%E6%A0%91%E8%8E%93%E6%B4%BE%E2%80%94%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="树莓派之 MQTT 搭建每天出门总怀疑自己灯没关、空调没关，晚上睡觉的时候躺下才意识到灯没关、然而开关却理我特别远，这我可接受不了 2333 ，所以产生了这种刚需🤣，这里记录一下搭建MQTT环境的过程。   搭建的两种方法 树莓派作为 MQTT 服务器，用花生壳映射端口( 6 块钱)可以供给外网访问，这个方法的话最便宜的方案吧，不过外网的端口是不固定的，如果被改变了就得打开花生壳管理器查看分配的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%A0%91%E8%8E%93%E6%B4%BEMQTT%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8MQTT%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%AA%E8%A1%A8%E7%9B%98.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MQTT.fx.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MQTT.fx%E9%85%8D%E7%BD%AE.png">
+<meta property="article:published_time" content="2018-08-26T07:13:24.000Z">
+<meta property="article:modified_time" content="2018-12-04T15:08:07.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="MQTT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%A0%91%E8%8E%93%E6%B4%BEMQTT%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>树莓派|云服务器-MQTT环境搭建 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">树莓派|云服务器-MQTT环境搭建</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-08-26 15:13" pubdate>
+          2018年8月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">树莓派|云服务器-MQTT环境搭建</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="树莓派之-MQTT-搭建"><a href="#树莓派之-MQTT-搭建" class="headerlink" title="树莓派之 MQTT 搭建"></a>树莓派之 MQTT 搭建</h2><p>每天出门总怀疑自己灯没关、空调没关，晚上睡觉的时候躺下才意识到灯没关、然而开关却理我特别远，这我可接受不了 2333 ，所以产生了这种刚需🤣，这里记录一下搭建<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/MQTT/3618851">MQTT</a>环境的过程。</p>
+<!---more---->
+
+<h2 id="搭建的两种方法"><a href="#搭建的两种方法" class="headerlink" title="搭建的两种方法"></a>搭建的两种方法</h2><ol>
+<li>树莓派作为 MQTT 服务器，用花生壳映射端口( 6 块钱)可以供给外网访问，这个方法的话最便宜的方案吧，不过外网的端口是不固定的，如果被改变了就得打开花生壳管理器查看分配的公网端口，嫌麻烦的话可以买固定的端口，得差不多 100 块这样子。不过这两个都是永久的加起来 100 多一点。当然如果不嫌麻烦，那就只要 6 元了。结构大概就是这样子，23333 画的不太好将就看。<br>树莓派同时运行一个 MQTT 服务器和一个 MQTT 客户端。手机运行一个 MQTT 客户端，通过访问花生壳映射之后的域名和端口来访问内网的树莓派 MQTT 服务器进行通信。树莓派运行的 MQTT 客户端直接通过内网和服务器进行通信。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%A0%91%E8%8E%93%E6%B4%BEMQTT%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg" srcset="/img/loading.gif" lazyload>  </li>
+<li>云主机作为 MQTT 服务器，这个方案的话因为我之前买了腾讯云的服务器 120 一年，续了三年。闲置着也是没有用，所以利用了起来。这个方法的话比较容易实现，不折腾那些个什么内网穿透，但是钱也会多很多，不过云服务器有公网 IP 还有以后可以有很多利用的地方。大概的关系就是如下图，比较容易理解的吧还是，树莓派运行的客户端通过网络和云主机上的服务器进行通信，手机上的MQTT客户端同样如此。</li>
+</ol>
+<p><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8MQTT%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>MQTT 的服务器我选择使用的是开源的 EMQTT ,官方提供了很多系统的安装包，很容易搭建的，管理也很方便。官网见 <a target="_blank" rel="noopener" href="http://emqtt.com/">http://emqtt.com/</a>.树莓派作为服务器的话安装使用需要采用源码的方式进行编译安装。</p>
+<h2 id="云主机作为MQTT服务器"><a href="#云主机作为MQTT服务器" class="headerlink" title="云主机作为MQTT服务器"></a>云主机作为MQTT服务器</h2><p>之前搞优惠活动的时候买的腾讯云的服务器，服务器的配置是 2G 内存 1Mbps 带宽 40GB 硬盘，跑这个绰绰有余。具体的购买流程就不说了，傻瓜式的，我选择的是 centos 7 作为系统，因为据说这个系统做服务器多？这个后续后悔了还可以免费改的。<br>买了服务器之后要<a target="_blank" rel="noopener" href="https://www.yuntunpuzi.com/qcloud/178/">设置安全组的规则</a>，我是把所有端口都打开了的(安全？不存在考虑的)，最起码要把 22 端口开放，因为这个是 SSH 登录要用的端口。完成初步的配置就可以用了。搞到服务器的密码就可以用账户 root + 密码进行 SSH 访问了。之后的都是用 SSH 进行配置的。SSH 软件的使用可以看之前写的树莓派安装系统和配置下的-&gt;<a target="_blank" rel="noopener" href="http://begild.top/article/fd8be0b3.html">使用SSH进行树莓派的连接</a><br>接下来的操作都是在 centos 7系统的终端里运行的。  </p>
+<ol>
+<li><p>通过 rpm 安装包进行安装。(使用简单快捷)教程可以看<a target="_blank" rel="noopener" href="http://emqtt.com/docs/v2/install.html#rpm">这里</a>.    </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">yum install wget <span class="hljs-regexp">//</span>安装下载工具这个应该都是预置了的<br>yum install lksctp-tools  <span class="hljs-regexp">//</span>安装Erlang/OTP R19依赖库<br>wget http:<span class="hljs-regexp">//</span>emqtt.com<span class="hljs-regexp">/downloads/</span>latest<span class="hljs-regexp">/centos7-rpm -O emqttd-centos7-x86_64.rpm /</span>/下载安装包<br>rpm -ivh emqttd-centos7-x86_64.rpm <span class="hljs-regexp">//</span>安装<br></code></pre></td></tr></table></figure>
+<p>  安装完成之后呢就可以运行了，是不是超级简单。通过下面的命令可以启动、停止、重启、查看状态整个 EMQTT 服务。这个方式安装，配置文件存放在<code>/etc/emqttd/</code>下的。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coq">systemctl start|<span class="hljs-type">stop</span>|<span class="hljs-type">restart</span>|<span class="hljs-type">status</span> emqttd.service<br></code></pre></td></tr></table></figure></li>
+<li><p>通用包方式安装。(绿色解压版)。教程可以看<a target="_blank" rel="noopener" href="http://emqtt.com/docs/v2/install.html#linux">这里</a>.绿色版嘛当然是要手动执行文件启动的啦。这个方式下的配置文件是存放在解压目录下的<code>etc</code>下,不在<code>/etc/emqttd/</code>下。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">wget http:<span class="hljs-string">//emqtt.com/downloads/latest/centos7</span> -O emqttd-centos7.zip <span class="hljs-string">//</span>下载压缩包<br>unzip emqttd-centos7.zip <span class="hljs-string">//</span>解压安装<br><br><span class="hljs-keyword">cd</span> 解压目录<span class="hljs-string">/emqttd</span><br><span class="hljs-string">./bin/emqttd</span> console <span class="hljs-string">//</span>运行控制台 ctrl+c退出<br><span class="hljs-string">./bin/emqttd</span> start|stop|restart <span class="hljs-string">//</span>后台守护进程方式<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>访问服务器控制界面<br>Dashboard 插件可查询 EMQ 消息服务器基本信息、统计数据、度量数据，查询系统客户端(Client)、会话(Session)、主题(Topic)、订阅(Subscription)。EMQ 消息服务器默认加载 Dashboard 插件。<br>安装完成之后访问在浏览器地址栏输入 服务器IP:18083&#x2F; 即可访问网页端的控制界面，如下图所示。会提示你输入登录账户和密码，默认的账户是<code>admin</code> 密码是 <code>public</code>。登录之后点击侧边 <code>USER</code> 栏，可以看到 <code>admin</code> 账户点击 <code>Edit</code> 即可更改密码。页面右上角可以切换主题配色，语言。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%AA%E8%A1%A8%E7%9B%98.png" srcset="/img/loading.gif" lazyload>  </p>
+</li>
+<li><p>MQTT 服务器的配置。<br>无论通过何种方式安装都需要修改服务器的一些插件和配置文件才能为你所用。这里呢主要是配置客户端的登录服务器验证方式和客户端的ID等信息。<br>其认证方式如下，客户端接入服务器呢，需要进行用户名密码的认证，客户端ID的认证，如果你两个都不开(ignore)的话就是匿名认证。用户名的认证需要打开  <code>emq_auth_username</code> 插件。客户端ID的认证需要打开 <code>emq_auth_clientid</code> 插件。服务器默认打开匿名认证，我选择打开用户名密码认证，客户端ID认证。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">          ----------------           ----------------           ------------<br>Client --&gt; | Username认证 | -ignore-&gt; | ClientID认证 | -ignore-&gt; | 匿名认证 |<br>          ----------------           ----------------           ------------<br>       |                         |                         |<br>      \|/                       \|/                       \|/<br> allow | deny              allow | deny              allow | deny<br></code></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>添加配置列表-用户名&#x2F;密码.<br>  既然使能了用户名密码验证，当然是需要添加用户名和密码的啦，配置文件为 <code>emq_auth_username.conf</code>,在各自存放配置文件的目录下的<code>plugins</code>目录下。软件安装版为<code>/etc/emqttd/plugins/emq_auth_username.conf</code>。解压绿色版为<code>解压目录/emqttd/etc/plugins/emq_auth_username.conf</code>。  使用下面命令打开文件(自行学习vim)。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>emqttd<span class="hljs-regexp">/plugins/</span>emq_auth_username.conf   <span class="hljs-regexp">//</span>软件安装版<br>vim 解压目录<span class="hljs-regexp">/emqttd/</span>etc<span class="hljs-regexp">/plugins/</span>emq_auth_username.conf  <span class="hljs-regexp">//</span>解压绿色版<br></code></pre></td></tr></table></figure>
+
+<p>打开文件可以看到给了示例的模板，按照模板增加即可。 贴一个示例如下。修改之后保存就好了。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment">##--------------------------------------------------------------------</span><br><span class="hljs-comment">## Username Authentication Plugin</span><br><span class="hljs-comment">##--------------------------------------------------------------------</span><br><span class="hljs-attr">auth.user.1.username</span> = BeGild_test<br><span class="hljs-attr">auth.user.1.password</span> = <span class="hljs-number">123456</span><br><span class="hljs-attr">auth.user.2.username</span> = BeGild_test_1<br><span class="hljs-attr">auth.user.2.password</span> = <span class="hljs-number">123456</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>添加配置列表-客户端ID<br>  既然使能了用客户端ID 验证，当然是需要添加客户端ID列表和密码的啦，配置文件为 <code>emq_auth_clientid.conf </code>,在各自存放配置文件的目录下的<code>plugins</code>目录下。软件安装版为<code>/etc/emqttd/plugins/emq_auth_clientid.conf </code>。解压绿色版为<code>解压目录/emqttd/etc/plugins/emq_auth_clientid.conf </code>。  使用下面命令打开文件(自行学习vim)。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>emqttd<span class="hljs-regexp">/plugins/</span>emq_auth_clientid.conf    <span class="hljs-regexp">//</span>软件安装版<br>vim 解压目录<span class="hljs-regexp">/emqttd/</span>etc<span class="hljs-regexp">/plugins/</span>emq_auth_clientid.conf   <span class="hljs-regexp">//</span>解压绿色版<br></code></pre></td></tr></table></figure>
+
+<p>打开文件可以看到给了示例的模板，按照模板增加即可。 贴一个示例如下。修改之后保存就好了。看起来和用户名密码是差不多的，他俩之间的对应关系还不太清楚，之后搞懂了会再更新。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment">##--------------------------------------------------------------------</span><br><span class="hljs-comment">## ClientId Authentication Plugin</span><br><span class="hljs-comment">##--------------------------------------------------------------------</span><br><span class="hljs-attr">auth.client.1.clientid</span> = test1<br><span class="hljs-attr">auth.client.1.password</span> = test1_pwd<br><span class="hljs-attr">auth.client.2.clientid</span> = test2<br><span class="hljs-attr">auth.client.2.password</span> = test2_pwd<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>打开认证插件<br>  插件打开可以点击网页的控制台侧边插件栏页面，可以看到很多插件第1,9个就是，点击右侧边启动按钮进行打开，打开成功就会变成绿色的<font color=#00cc00 size=3.7>运行中</font>。<br>  启用插件，配置完成之后即可投入使用啦。EMQ2.0支持的认证插件有可以看<a target="_blank" rel="noopener" href="http://emqtt.com/docs/v2/guide.html#id1">这里</a>这些.</p>
+</li>
+</ul>
+<h2 id="树莓派作为-MQTT-服务器"><a href="#树莓派作为-MQTT-服务器" class="headerlink" title="树莓派作为 MQTT 服务器"></a>树莓派作为 MQTT 服务器</h2><p>树莓派作为 MQTT 服务器同样需要安装服务器的软件，不过只能通过源码编译安装的方式进行，编译源码依赖于 Erlang 工具，所以得走两步，安装编译工具，下载源码编译安装。</p>
+<ol>
+<li>安装 erlang 编译环境.emmmm 这个工具编译完毕之后就可以卸磨杀驴！<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">sudo apt-<span class="hljs-keyword">get</span> install erlang <span class="hljs-comment">//安装 erlang</span><br>sudo apt-<span class="hljs-keyword">get</span> autoremove erlang <span class="hljs-comment">//卸载 erlang</span><br></code></pre></td></tr></table></figure></li>
+<li>挑一个自己喜欢的目录执行下面指令进行源码克隆和编译.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/emqtt/emq-relx.git<br><span class="hljs-built_in">cd</span> emq-relx<br>make<br></code></pre></td></tr></table></figure></li>
+<li>待编译成功后会生成<code>_rel</code>目录存放生成的一系列可执行文件和配置文件等,执行下面语句执行控制台方式启动.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> _rel/emqttd<br>./bin/emqttd console<br></code></pre></td></tr></table></figure>
+可支持的指令和组合有如下.<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coq">Usage: emqttd &#123;start|<span class="hljs-type">start_boot</span> &lt;file&gt;|<span class="hljs-type">foreground</span>|<span class="hljs-type">stop</span>|<span class="hljs-type">restart</span>|<span class="hljs-type">reboot</span>|<span class="hljs-type">pid</span>|<span class="hljs-type">ping</span>|<span class="hljs-type">console</span>|<span class="hljs-type">console_clean</span>|<span class="hljs-type">console_boot</span> &lt;file&gt;|<span class="hljs-type">attach</span>|<span class="hljs-type">remote_console</span>|<span class="hljs-type">upgrade</span>|<span class="hljs-type">escript</span>|<span class="hljs-type">rpc</span>|<span class="hljs-type">rpcterms</span>|<span class="hljs-type">eval</span>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>列一下常用指令正常的表现吧。</li>
+</ol>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs elixir">//这是控制台方式启动 <span class="hljs-title class_">EMQTT</span> 会输出一些启动，运行的信息。<br>pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/server/emq-relx/_rel/emqttd</span> <span class="hljs-variable">$ </span>./bin/emqttd console<br><span class="hljs-symbol">Exec:</span> /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/erts<span class="hljs-number">-8.2</span>.<span class="hljs-number">1</span>/bin/erlexec -boot /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/releases/<span class="hljs-number">2.3</span>.<span class="hljs-number">11</span>/emqttd -mode embedded -boot_var <span class="hljs-title class_">ERTS_LIB_DIR</span> /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/erts<span class="hljs-number">-8.2</span>.<span class="hljs-number">1</span>/../lib -mnesia dir <span class="hljs-string">&quot;/home/pi/Documents/MQtt/server/emq-relx/_rel/emqttd/data/mnesia/emq@127.0.0.1&quot;</span> -config /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/data/configs/app.<span class="hljs-number">2018.08</span>.<span class="hljs-number">30.15</span>.<span class="hljs-number">18.31</span>.config -args_file /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/data/configs/vm.<span class="hljs-number">2018.08</span>.<span class="hljs-number">30.15</span>.<span class="hljs-number">18.31</span>.args -vm_args /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd/data/configs/vm.<span class="hljs-number">2018.08</span>.<span class="hljs-number">30.15</span>.<span class="hljs-number">18.31</span>.args -- console<br><span class="hljs-symbol">Root:</span> /home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd<br>/home/pi/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">MQtt</span>/server/emq-relx/_rel/emqttd<br><span class="hljs-title class_">Erlang</span>/<span class="hljs-title class_">OTP</span> <span class="hljs-number">19</span> [erts<span class="hljs-number">-8.2</span>.<span class="hljs-number">1</span>] [source] [<span class="hljs-symbol">smp:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">4</span>] [async-<span class="hljs-symbol">threads:</span><span class="hljs-number">32</span>] [kernel-<span class="hljs-symbol">poll:</span><span class="hljs-literal">true</span>]<br><br><br>=<span class="hljs-title class_">INFO</span> <span class="hljs-title class_">REPORT</span>==== <span class="hljs-number">30</span>-<span class="hljs-title class_">Aug</span><span class="hljs-number">-2018</span>::<span class="hljs-number">15</span><span class="hljs-symbol">:</span><span class="hljs-number">18</span><span class="hljs-symbol">:</span><span class="hljs-number">52</span> ===<br>    <span class="hljs-symbol">alarm_handler:</span> &#123;set,&#123;system_memory_high_watermark,[]&#125;&#125;<br>starting emqttd on node <span class="hljs-string">&#x27;emq@127.0.0.1&#x27;</span><br>emqttd ctl is starting...[ok]<br>emqttd hook is starting...[ok]<br>emqttd router is starting...[ok]<br>emqttd pubsub is starting...[ok]<br>emqttd stats is starting...[ok]<br>emqttd metrics is starting...[ok]<br>emqttd pooler is starting...[ok]<br>emqttd trace is starting...[ok]<br>emqttd client manager is starting...[ok]<br>emqttd session manager is starting...[ok]<br>emqttd session supervisor is starting...[ok]<br>emqttd wsclient supervisor is starting...[ok]<br>emqttd broker is starting...[ok]<br>emqttd alarm is starting...[ok]<br>emqttd mod supervisor is starting...[ok]<br>emqttd bridge supervisor is starting...[ok]<br>emqttd access control is starting...[ok]<br>emqttd system monitor is starting...[ok]<br>emqttd <span class="hljs-number">2.3</span>.<span class="hljs-number">11</span> is running now<br><span class="hljs-title class_">Eshell</span> <span class="hljs-title class_">V8</span>.<span class="hljs-number">2.1</span>  (abort <span class="hljs-keyword">with</span> ^G)<br>(emq<span class="hljs-variable">@127</span>.<span class="hljs-number">0.0</span>.<span class="hljs-number">1</span>)<span class="hljs-number">1</span>&gt; <span class="hljs-title class_">Load</span> emq_mod_presence module successfully.<br><span class="hljs-symbol">dashboard:</span>http listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">18083</span> <span class="hljs-keyword">with</span> <span class="hljs-number">4</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>tcp listen on <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><span class="hljs-symbol">:</span><span class="hljs-number">11883</span> <span class="hljs-keyword">with</span> <span class="hljs-number">4</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>tcp listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">1883</span> <span class="hljs-keyword">with</span> <span class="hljs-number">16</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>ws listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">8083</span> <span class="hljs-keyword">with</span> <span class="hljs-number">4</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>ssl listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">8883</span> <span class="hljs-keyword">with</span> <span class="hljs-number">16</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>wss listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">8084</span> <span class="hljs-keyword">with</span> <span class="hljs-number">4</span> acceptors.<br><span class="hljs-symbol">mqtt:</span>api listen on <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span> <span class="hljs-keyword">with</span> <span class="hljs-number">4</span> acceptors.<br><br>(emq<span class="hljs-variable">@127</span>.<span class="hljs-number">0.0</span>.<span class="hljs-number">1</span>)<span class="hljs-number">1</span>&gt;<br>//这是后台守护进程方式启动 <span class="hljs-title class_">EMQTT</span> 服务器 启动有点慢，稍等稍等。<br>pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/server/emq-relx/_rel/emqttd</span> <span class="hljs-variable">$ </span>./bin/emqttd start<br>emqttd <span class="hljs-number">2.3</span>.<span class="hljs-number">11</span> is started successfully!<br>//这是停止当前启动了的 <span class="hljs-title class_">EMQTT</span> 服务器<br>pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/server/emq-relx/_rel/emqttd</span> <span class="hljs-variable">$ </span>./bin/emqttd stop<br>ok<br>//这是重启已经启动了的 <span class="hljs-title class_">EMQTT</span> 服务器<br>pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/server/emq-relx/_rel/emqttd</span> <span class="hljs-variable">$ </span>./bin/emqttd restart<br>ok<br><br></code></pre></td></tr></table></figure>
+<p>如果运行的时候出现下面错误,那你一定是运行的目录不对，一定要是 <code>_rel/emqttd/</code>目录下才是编译生成的目录，才可以运行 EMQTT 服务器！！！。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs elixir">pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/server/emq-relx/bin</span> <span class="hljs-variable">$ </span>./emqttd restart<br>./<span class="hljs-symbol">emqttd:</span> <span class="hljs-number">20</span>: ./<span class="hljs-symbol">emqttd:</span> <span class="hljs-symbol">runner_log_dir:</span> <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
+<ol start="5">
+<li>访问服务器控制界面。<br>在浏览器输入树莓派IP:18083，输入账号 admin 和默认密码 public 进入管理控制界面，其余操作和以云主机作为 MQTT 服务器上一样，打开两个认证插件即可。</li>
+<li>MQTT 服务器的配置。<br>配置文件的修改参照上面以云主机为 MQTT 服务器的配置例子，只是配置文件在<code>_rel/emqttd/etc/</code>下面。</li>
+<li>花生壳外网访问的配置。参照<a target="_blank" rel="noopener" href="http://begild.top/article/3ac023e7.html">树莓派-花生壳-内网穿透</a>中的添加端口映射1883到外网。</li>
+</ol>
+<h2 id="安装-MQTT-客户端依赖库"><a href="#安装-MQTT-客户端依赖库" class="headerlink" title="安装 MQTT 客户端依赖库"></a>安装 MQTT 客户端依赖库</h2><p>安装好服务器可以使用了，就进入客户端代码的编写了呀，客户端在树莓派上运行一个，在手机上运行一个。</p>
+<ol>
+<li><p>在树莓派上使用 MQTT 客户端当然是要安装 MQTT 客户端的库呀，首先运行下面几条命令做一些编译前的准备。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino">cd /home/pi/Documents &amp;&amp; mkdir emqtt <span class="hljs-comment">//创建一个mqtt的目录</span><br>cd emqtt &amp;&amp; git clone https:<span class="hljs-comment">//github.com/eclipse/paho.mqtt.c.git  //克隆mqtt客户端源码</span><br>sudo apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui <span class="hljs-comment">//安装编译工具</span><br>sudo apt-get install fakeroot fakeroot devscripts dh-make lsb-release <span class="hljs-comment">//安装软件包构建工具</span><br>sudo apt-get install libssl-dev <span class="hljs-comment">//安装openssl</span><br>sudo apt-get install doxygen graphviz <span class="hljs-comment">//安装文档生成工具</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>编译 MQTT 客户端源码。官方的教程看这里<a target="_blank" rel="noopener" href="https://github.com/eclipse/paho.mqtt.c">paho.mqtt.c</a>    </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs markdown">cd paho.mqtt.c &amp;&amp; make //转到源码目录进行编译<br>/<span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">**<span class="hljs-emphasis">*等待漫长的时间没有报错就OK了*</span>**</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">**/</span><br><span class="hljs-strong">sudo make html //编译生成文档</span><br><span class="hljs-strong">sudo make install //安装到系统</span><br></code></pre></td></tr></table></figure>
+<p>备注:需要编译生成文档不然安装时会提示如下错误的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs swift">install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTClient/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTClient</span>.h.<span class="hljs-number">3</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/</span>man<span class="hljs-operator">/</span>man3<br>install: 无法获取&#x27;build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTClient/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTClient</span>.h.<span class="hljs-number">3</span>&#x27; 的文件状态(stat): 没有那个文件或目录<br><span class="hljs-type">Makefile</span>:<span class="hljs-number">273</span>: recipe <span class="hljs-keyword">for</span> target &#x27;install&#x27; failed<br>make: [install] <span class="hljs-type">Error</span> <span class="hljs-number">1</span> (ignored)<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTAsync/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTAsync</span>.h.<span class="hljs-number">3</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/</span>man<span class="hljs-operator">/</span>man3<br>install: 无法获取&#x27;build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTAsync/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTAsync</span>.h.<span class="hljs-number">3</span>&#x27; 的文件状态(stat): 没有那个文件或目录<br><span class="hljs-type">Makefile</span>:<span class="hljs-number">273</span>: recipe <span class="hljs-keyword">for</span> target &#x27;install&#x27; failed<br>make: [install] <span class="hljs-type">Error</span> <span class="hljs-number">1</span> (ignored)<br></code></pre></td></tr></table></figure>
+<p>  安装成功显示如下信息。</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs swift">pi<span class="hljs-meta">@BeGild_Raspi</span>:<span class="hljs-operator">~/</span><span class="hljs-type">Documents</span><span class="hljs-regexp">/MQtt/</span>paho.mqtt.c $ sudo make install<br>mkdir <span class="hljs-operator">-</span>p build<span class="hljs-regexp">/output/</span>samples<br>mkdir <span class="hljs-operator">-</span>p build<span class="hljs-regexp">/output/</span>test<br>echo <span class="hljs-type">OSTYPE</span> <span class="hljs-keyword">is</span> <span class="hljs-type">Linux</span><br><span class="hljs-type">OSTYPE</span> <span class="hljs-keyword">is</span> <span class="hljs-type">Linux</span><br>mkdir <span class="hljs-operator">-</span>p <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span>  build<span class="hljs-regexp">/output/</span>libpaho<span class="hljs-operator">-</span>mqtt3c.so.<span class="hljs-number">1.0</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>lib<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span>  build<span class="hljs-regexp">/output/</span>libpaho<span class="hljs-operator">-</span>mqtt3cs.so.<span class="hljs-number">1.0</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>lib<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span>  build<span class="hljs-regexp">/output/</span>libpaho<span class="hljs-operator">-</span>mqtt3a.so.<span class="hljs-number">1.0</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>lib<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span>  build<span class="hljs-regexp">/output/</span>libpaho<span class="hljs-operator">-</span>mqtt3as.so.<span class="hljs-number">1.0</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>lib<br>install  build<span class="hljs-regexp">/output/</span>paho_c_version <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>bin<br>install  build<span class="hljs-regexp">/output/</span>samples<span class="hljs-regexp">/paho_c_pub /</span>usr<span class="hljs-regexp">/local/</span>bin<br>install  build<span class="hljs-regexp">/output/</span>samples<span class="hljs-regexp">/paho_c_sub /</span>usr<span class="hljs-regexp">/local/</span>bin<br>install  build<span class="hljs-regexp">/output/</span>samples<span class="hljs-regexp">/paho_cs_pub /</span>usr<span class="hljs-regexp">/local/</span>bin<br>install  build<span class="hljs-regexp">/output/</span>samples<span class="hljs-regexp">/paho_cs_sub /</span>usr<span class="hljs-regexp">/local/</span>bin<br><span class="hljs-regexp">/sbin/</span>ldconfig <span class="hljs-regexp">/usr/</span>local<span class="hljs-operator">/</span>lib<br>ln <span class="hljs-operator">-</span>s libpaho<span class="hljs-operator">-</span>mqtt3c.so.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpaho<span class="hljs-operator">-</span>mqtt3c.so<br>ln <span class="hljs-operator">-</span>s libpaho<span class="hljs-operator">-</span>mqtt3cs.so.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpaho<span class="hljs-operator">-</span>mqtt3cs.so<br>ln <span class="hljs-operator">-</span>s libpaho<span class="hljs-operator">-</span>mqtt3a.so.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpaho<span class="hljs-operator">-</span>mqtt3a.so<br>ln <span class="hljs-operator">-</span>s libpaho<span class="hljs-operator">-</span>mqtt3as.so.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpaho<span class="hljs-operator">-</span>mqtt3as.so<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTAsync.h /</span>usr<span class="hljs-regexp">/local/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTClient.h /</span>usr<span class="hljs-regexp">/local/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTClientPersistence.h /</span>usr<span class="hljs-regexp">/local/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTProperties.h /</span>usr<span class="hljs-regexp">/local/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTReasonCodes.h /</span>usr<span class="hljs-regexp">/local/</span>include<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> src<span class="hljs-regexp">/MQTTSubscribeOpts.h /</span>usr<span class="hljs-regexp">/local/</span>include       <br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> doc<span class="hljs-regexp">/man/</span>man1<span class="hljs-regexp">/paho_c_pub.1 /</span>usr<span class="hljs-regexp">/local/</span>share<span class="hljs-regexp">/man/</span>man1<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> doc<span class="hljs-regexp">/man/</span>man1<span class="hljs-regexp">/paho_c_sub.1 /</span>usr<span class="hljs-regexp">/local/</span>share<span class="hljs-regexp">/man/</span>man1<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> doc<span class="hljs-regexp">/man/</span>man1<span class="hljs-regexp">/paho_cs_pub.1 /</span>usr<span class="hljs-regexp">/local/</span>share<span class="hljs-regexp">/man/</span>man1<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> doc<span class="hljs-regexp">/man/</span>man1<span class="hljs-regexp">/paho_cs_sub.1 /</span>usr<span class="hljs-regexp">/local/</span>share<span class="hljs-regexp">/man/</span>man1<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTClient/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTClient</span>.h.<span class="hljs-number">3</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/</span>man<span class="hljs-operator">/</span>man3<br>install <span class="hljs-operator">-</span>m <span class="hljs-number">644</span> build<span class="hljs-regexp">/output/</span>doc<span class="hljs-regexp">/MQTTAsync/</span>man<span class="hljs-regexp">/man3/</span><span class="hljs-type">MQTTAsync</span>.h.<span class="hljs-number">3</span> <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/</span>man<span class="hljs-operator">/</span>man3<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="编写-MQTT-客户端代码"><a href="#编写-MQTT-客户端代码" class="headerlink" title="编写 MQTT 客户端代码"></a>编写 MQTT 客户端代码</h2><ol>
+<li>客户端代码。流程就是，根据服务器地址，用户名、密码、客户端ID登录到服务器，进行主题的订阅或者向某个主题进行消息的发布这样子。从网上抄了代码(只有ctrl+c ctrl+v才能够勉强维持生活这样子)，魔改了一下贴上。这个程序在运行之后会创建一个发送线程<code>TestSend</code>，每隔 3s 发送一次信息,发送成功会通过回调函数<code>MQTTClient_deliveryToken</code>进行打印报告。收到信息会通过回调函数<code>MsgArrived_CallBack</code>进行信息的打印。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;pthread.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;MQTTClient.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-comment">/*类型兼容***********************************************/</span><br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>      <span class="hljs-type">uint64_t</span>;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>       <span class="hljs-type">uint32_t</span>;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span>     <span class="hljs-type">uint16_t</span>;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      <span class="hljs-type">uint8_t</span>;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>      u64;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>       u32;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span>     u16;<br><span class="hljs-keyword">typedef</span>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      u8;<br><span class="hljs-comment">/***********************************************类型兼容*/</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NUM_THREADS 2 <span class="hljs-comment">//线程个数</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ADDRESS         <span class="hljs-string">&quot;tcp://*.*.*.*:1883&quot;</span> <span class="hljs-comment">//云主机作为mqtt服务器地址</span></span><br><span class="hljs-comment">//#define ADDRESS         &quot;tcp://localhost:1883&quot; //树莓派作为mqtt服务器地址，直接通过内网访问。</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CLIENTID        <span class="hljs-string">&quot;test_1&quot;</span> <span class="hljs-comment">//客户端ID</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TOPIC_PUBLISH   <span class="hljs-string">&quot;Hello_1&quot;</span>  <span class="hljs-comment">//发送的主题</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TOPIC_SUBSCRIBE <span class="hljs-string">&quot;Hello_2&quot;</span>  <span class="hljs-comment">//订阅的主题</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PAYLOAD         <span class="hljs-string">&quot;Hello! My Name is &quot;</span>CLIENTID  <span class="hljs-comment">//发送的信息</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> QOS             1           <span class="hljs-comment">//服务质量 &lt;&lt;0-最多发送一次 1-至少保证送达一次 2-保证只送达1次</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TIMEOUT         10000L      <span class="hljs-comment">//超时时间</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> USERNAME        <span class="hljs-string">&quot;username&quot;</span>    <span class="hljs-comment">//登录用户名</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PASSWORD        <span class="hljs-string">&quot;password&quot;</span>    <span class="hljs-comment">//登录用户名对应密码</span></span><br><br><span class="hljs-keyword">volatile</span> MQTTClient_deliveryToken gDeliveredToken;<br><span class="hljs-comment">/** void deliveryComplete_CallBack(void *context, MQTTClient_deliveryToken deliveryToken)</span><br><span class="hljs-comment"> * @brief MQTT发送信息成功回调函数</span><br><span class="hljs-comment"> * @note 客户端发送信息成功时将会调用该函数</span><br><span class="hljs-comment"> * @param[in] context 上下文指针</span><br><span class="hljs-comment"> * @param[in] deliveryToken 发送信息的Token值</span><br><span class="hljs-comment"> * @date 2018/08/25 17:20</span><br><span class="hljs-comment"> * @auth BeGild</span><br><span class="hljs-comment"> * @email yucang_bao@126.com</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">deliveryComplete_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *context, MQTTClient_deliveryToken deliveryToken)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\rMessage with token %5d Send Success\n&quot;</span>, deliveryToken);<br>    gDeliveredToken = deliveryToken;<br>&#125;<br><span class="hljs-comment">/** int MsgArrived_CallBack(void *context, char *topicName, int topicLen, MQTTClient_message *message)</span><br><span class="hljs-comment"> * @brief 接收到MQTT数据的回调函数</span><br><span class="hljs-comment"> * @param[in] context 上下文指针</span><br><span class="hljs-comment"> * @param[in] topicName 本次接收到信息的主题</span><br><span class="hljs-comment"> * @param[in] topicLen 本次接收到信息的主题长度</span><br><span class="hljs-comment"> * @param[in] message 本次接收到数据的存储结构体</span><br><span class="hljs-comment"> *                    数据实体存放于 message-&gt;payload</span><br><span class="hljs-comment"> *                    数据长度为 message-&gt;payloadlen</span><br><span class="hljs-comment"> * @date 2018/08/25 17:20</span><br><span class="hljs-comment"> * @auth BeGild</span><br><span class="hljs-comment"> * @email yucang_bao@126.com</span><br><span class="hljs-comment"> * return 返回值</span><br><span class="hljs-comment"> */</span><br> <span class="hljs-type">int</span> <span class="hljs-title function_">MsgArrived_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *context, <span class="hljs-type">char</span> *topicName, <span class="hljs-type">int</span> topicLen, MQTTClient_message *message)</span><br> &#123;<br>     <span class="hljs-type">int</span> i;<br>     <span class="hljs-type">uint8_t</span> *payloadptr;<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Recive Message\n&quot;</span>);<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;     topic: %s\n&quot;</span>, topicName);<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;     message: \n&gt;&gt;\n&quot;</span>);<br>     payloadptr = message-&gt;payload;<br>     <span class="hljs-comment">//打印接受到的数据</span><br>     <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;message-&gt;payloadlen; i++)<br>     &#123;<br>         <span class="hljs-built_in">putchar</span>(*payloadptr++);<br>     &#125;<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&lt;&lt;\n&quot;</span>);<br>     MQTTClient_freeMessage(&amp;message);<br>     MQTTClient_free(topicName);<br>     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br> &#125;<br><span class="hljs-comment">/** void ConnectLost_CallBack(void *context, char *cause)</span><br><span class="hljs-comment"> * @brief 连接丢失回调函数</span><br><span class="hljs-comment"> * @note 可能原因:</span><br><span class="hljs-comment"> *			1.被挤下线</span><br><span class="hljs-comment"> *			2.网络异常</span><br><span class="hljs-comment"> * @date 2018/08/25 16:18</span><br><span class="hljs-comment"> * @auth BeGild</span><br><span class="hljs-comment"> * @email yucang_bao@126.com</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">ConnectLost_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *context, <span class="hljs-type">char</span> *cause)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\nConnection lost &quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\t cause: %s\n&quot;</span>, cause);<br>&#125;<br><span class="hljs-comment">/** void PublishMessage(MQTTClient client,uint8_t* TopicName, uint8_t *DataBuf,uint32_t BufLen)</span><br><span class="hljs-comment"> * @brief 推送信息</span><br><span class="hljs-comment"> * @param[in] client 发送的客户端ID</span><br><span class="hljs-comment"> * @param[in] TopicName 发送的主题</span><br><span class="hljs-comment"> * @param[in] DataBuf 发送的数据缓冲区</span><br><span class="hljs-comment"> * @param[in] BufLen 发送的数据长度</span><br><span class="hljs-comment"> * @date 2018/08/25 17:49</span><br><span class="hljs-comment"> * @auth BeGild</span><br><span class="hljs-comment"> * @email yucang_bao@126.com</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">PublishMessage</span><span class="hljs-params">(MQTTClient client,<span class="hljs-type">uint8_t</span>* TopicName, <span class="hljs-type">uint8_t</span> *DataBuf,<span class="hljs-type">uint32_t</span> BufLen)</span><br>&#123;<br>    MQTTClient_message Publishmsg = MQTTClient_message_initializer;<br>    <span class="hljs-comment">//声明消息token</span><br>    MQTTClient_deliveryToken token;<br>    Publishmsg.payload = DataBuf;<br>    Publishmsg.payloadlen = BufLen;<br>    Publishmsg.qos = QOS;<br>    Publishmsg.retained = <span class="hljs-number">0</span>;<br>    MQTTClient_publishMessage(client, TopicName, &amp;Publishmsg, &amp;token);<span class="hljs-comment">//发送数据</span><br>    <span class="hljs-comment">// rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);</span><br>    <span class="hljs-comment">// printf(&quot;Message with delivery token %d delivered\n&quot;, token);</span><br>&#125;<br><span class="hljs-comment">/** void *TestSend(void *arg)</span><br><span class="hljs-comment"> * @brief 测试发送</span><br><span class="hljs-comment"> * @param[in] arg 传入参数指针</span><br><span class="hljs-comment"> * @return 返回值</span><br><span class="hljs-comment"> * @date 2018/08/25 18:58</span><br><span class="hljs-comment"> * @auth BeGild</span><br><span class="hljs-comment"> * @email yucang_bao@126.com</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> *<span class="hljs-title function_">TestSend</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>  <span class="hljs-type">char</span> MsgBuff [] = PAYLOAD;<br>  MQTTClient *client = (MQTTClient *)arg;<span class="hljs-comment">//客户端句柄</span><br>  <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>  &#123;<br>    PublishMessage(*client,TOPIC_PUBLISH,MsgBuff,<span class="hljs-built_in">strlen</span>(MsgBuff));<span class="hljs-comment">//发送信息</span><br>    usleep(<span class="hljs-number">3000000L</span>);<span class="hljs-comment">//睡眠3s</span><br>  &#125;<br>   pthread_exit(<span class="hljs-literal">NULL</span>);<span class="hljs-comment">//退出线程</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>&#125;<br><span class="hljs-comment">/**int main(int argc, char* argv[])</span><br><span class="hljs-comment"> * @brief 主函数</span><br><span class="hljs-comment"> * @param[in] argc参数个数</span><br><span class="hljs-comment"> * @param[in] argv 参数列表</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>* argv[])</span><br>&#123;<br>    <span class="hljs-type">pthread_t</span> threads[NUM_THREADS];<br>    <span class="hljs-type">char</span> SubTopic[] = TOPIC_SUBSCRIBE;<br>    <span class="hljs-type">char</span> ClientID [] = CLIENTID;<br>    <span class="hljs-type">long</span> t;<br>    MQTTClient client;<span class="hljs-comment">//客户端句柄</span><br>    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;<span class="hljs-comment">//连接参数</span><br>    <span class="hljs-type">int</span> rc;<br>    <span class="hljs-type">int</span> ch;<br><br>    MQTTClient_create(&amp;client, ADDRESS, ClientID,<br>        MQTTCLIENT_PERSISTENCE_NONE, <span class="hljs-literal">NULL</span>);<span class="hljs-comment">//根据服务器地址客户端ID创建一个可用连接</span><br>    <span class="hljs-comment">/*填写连接参数*/</span><br>    conn_opts.keepAliveInterval = <span class="hljs-number">20</span>;<br>    conn_opts.cleansession = <span class="hljs-number">1</span>;<br>    conn_opts.username = USERNAME;<br>    conn_opts.password = PASSWORD;<br>    <span class="hljs-comment">/*设置回调函数*/</span><br>    MQTTClient_setCallbacks(client, <span class="hljs-literal">NULL</span>,<br>                                    ConnectLost_CallBack,<span class="hljs-comment">/*连接丢失*/</span><br>                                    MsgArrived_CallBack,<span class="hljs-comment">/*收到信息*/</span><br>                                    deliveryComplete_CallBack);<span class="hljs-comment">/*信息成功发出*/</span><br>    <span class="hljs-comment">/*尝试连接服务器*/</span><br>    <span class="hljs-keyword">if</span> ((rc = MQTTClient_connect(client, &amp;conn_opts)) != MQTTCLIENT_SUCCESS)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Failed to connect, return code %d\n&quot;</span>, rc);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<span class="hljs-comment">//连接失败退出</span><br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[-------------------------------&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; Connect to EMQTT server complete&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;--------------------------------]\n\n&quot;</span>);<br>    <span class="hljs-comment">//订阅主题</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Client [%s] ---- using QoS[%d] ---- Subscribing to topic [%s]\n\n&quot;</span>, ClientID,QOS,SubTopic);<br>    MQTTClient_subscribe(client, SubTopic, QOS);<br><br>    <span class="hljs-comment">//创建测试发送线程</span><br>    pthread_create(&amp;threads[<span class="hljs-number">0</span>], <span class="hljs-literal">NULL</span>, TestSend,&amp;client);<br><br>    <span class="hljs-comment">/*主循环loop*/</span><br>    <span class="hljs-built_in">printf</span>( <span class="hljs-string">&quot;Press Q&lt;Enter&gt; to quit\n\n&quot;</span>);<br>    <span class="hljs-keyword">do</span><br>    &#123;<br>      ch = getchar();<br>    &#125; <span class="hljs-keyword">while</span>(ch!=<span class="hljs-string">&#x27;Q&#x27;</span> &amp;&amp; ch != <span class="hljs-string">&#x27;q&#x27;</span>);<br>    pthread_exit(&amp;threads[<span class="hljs-number">0</span>]);<br>    MQTTClient_unsubscribe(client, SubTopic);<span class="hljs-comment">//取消订阅</span><br>    MQTTClient_disconnect(client, <span class="hljs-number">10000</span>);<span class="hljs-comment">//断开连接</span><br>    MQTTClient_destroy(&amp;client);<span class="hljs-comment">//销毁当前clien</span><br>    pthread_exit(<span class="hljs-literal">NULL</span>);<span class="hljs-comment">//退出主线程main</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>   点击上述代码段右上角拷贝保存为<code>mqtttest_1.c</code>，执行一面这条语句编译生成可执行文件<code>mqtttest_1</code>。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">gcc -o mqtttest_<span class="hljs-number">1</span> mqtttest_<span class="hljs-number">1</span>.<span class="hljs-keyword">c</span> -lpaho-mqtt<span class="hljs-number">3</span><span class="hljs-keyword">c</span> -lpthread<br></code></pre></td></tr></table></figure>
+
+<h2 id="MQTT-客户端通信测试"><a href="#MQTT-客户端通信测试" class="headerlink" title="MQTT 客户端通信测试"></a>MQTT 客户端通信测试</h2><p>MQTT 的测试的话就是看两个客户端之间是否可以互相通信嘛。这里采用的方式是树莓派运行上面的客户端程序作为客户端1，用一个测试工具作为客户端2。客户端1订阅 <code>Hello_2</code> 主题 向 <code>Hello_1</code> 主题发送消息，客户端2订阅主题 <code>Hello_1</code> 向主题 <code>Hello_2</code> 发送消息。  </p>
+<ol>
+<li>执行<code>./mqtttest_1</code>运行树莓上的客户端1，成功运行会打印大致如下的信息。  <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs elixir">pi<span class="hljs-variable">@BeGild_Raspi</span><span class="hljs-symbol">:~/Documents/MQtt/mqtttest</span> <span class="hljs-variable">$ </span>./mqtttest_1<br>[------------------------------- <span class="hljs-title class_">Connect</span> to <span class="hljs-title class_">EMQTT</span> server complete--------------------------------]<br><br><span class="hljs-title class_">Client</span> [test_1] ---- using <span class="hljs-title class_">QoS</span>[<span class="hljs-number">1</span>] ---- <span class="hljs-title class_">Subscribing</span> to topic [<span class="hljs-title class_">Hello_2</span>]<br><br><span class="hljs-title class_">Press</span> Q&lt;<span class="hljs-title class_">Enter</span>&gt; to quit<br><br><span class="hljs-title class_">Message</span> <span class="hljs-keyword">with</span> token     <span class="hljs-number">2</span> <span class="hljs-title class_">Send</span> <span class="hljs-title class_">Success</span><br></code></pre></td></tr></table></figure>
+  如果连接失败返回错误码-1、4 检查</li>
+</ol>
+<ul>
+<li>是否运行了 EMQTT 服务器、服务器地址是否填写正确。</li>
+<li>服务器是否可达(ping 一下)，如果是云主机查看端口(1883)是否打开允许访问。</li>
+<li>检查 EMQTT 服务器配置文件中是否添加了对应的<code>username</code>、<code>password</code> 以及<code>clientid</code>、<code>password</code>。</li>
+</ul>
+<ol start="2">
+<li>运行 Mqtt 客户端测试工具 MQTT.fx 作为客户端2。</li>
+</ol>
+<ul>
+<li><p>点击<a target="_blank" rel="noopener" href="http://www.jensd.de/apps/mqttfx/">http://www.jensd.de/apps/mqttfx/</a>下载你想要的版本。</p>
+</li>
+<li><p>点击安装程序。</p>
+</li>
+<li><p>一个紫色的清秀小图标，打开 MQTT.fx 稍等片刻。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MQTT.fx.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>点击主界面小齿轮按钮进行相关服务器登录配置。如果是树莓派作为MQTT服务器的话这里的服务器地址就替换为在花生壳里添加映射的壳域名和分配的端口号(不是1883)。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MQTT.fx%E9%85%8D%E7%BD%AE.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>点击小齿轮左边的连接列表，选择刚创建的连接。</p>
+</li>
+<li><p>点击小齿轮右边的连接按钮进行连接服务器。连接成功后，下面的订阅和发布功能就都可以用了。</p>
+</li>
+</ul>
+<ol start="3">
+<li>功能测试</li>
+</ol>
+<ul>
+<li>MQTT.fx 点击切换到订阅(Subscribe)界面，在输入框输入需要订阅的主题，因为这里是作为客户端2当然是订阅<code>Hello_1</code>。订阅完成之后应该就可以在右下角的界面看到收到了客户端1每隔3s发过来的 <code>Hello! My Name is test_1</code> 。</li>
+<li>MQTT.fx 切换到发布(Pubilsh)界面，在输入框输入需要推送消息的主题。因为树莓派运行客户端1订阅的是主题<code>Hello_2</code>所以这里输入<code>Hello_2</code>。在右侧选择消息通信的质量 Qos1 (保证至少一次送达),在下方输入框任意敲入字符。点击 Pubilsh 按钮进行发布。可以在树莓派端看到其接收到了来自<code>Hello_2</code>的消息。</li>
+<li>都能收发就测试成功了。</li>
+</ul>
+<p>这里需要注意一下，如果订阅的主题就是发送的主题的话，自己也会收到自己发送的消息的。每个订阅了同一主题的客户端都能收到发布者的消息。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>我发现记录过程可比实现还难，这我都断断续续写了一个星期了，记录了MQTT服务器的搭建、插件启动、配置文件修改、MQTT 客户端在树莓派上的安装和使用、两个客户端之间的通信。这一系列工作完成基本的远程通信功能就通了。<br>后续再增加手机端 MQTT 客户端的开发(本来是打算用安卓 APP 的，后来想我做的 APP 界面惨不忍睹，已申请微信小程序明日开发)、通信协议制定、MCU 端的开发和硬件的制作，然后就可以远程控制了。我可真是个小机灵鬼。    </p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/" class="category-chain-item">树莓派</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MQTT/" class="print-no-link">#MQTT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>树莓派|云服务器-MQTT环境搭建</div>
+      <div>http://example.com/2018/08/26/树莓派—云服务器-EMQTT-环境搭建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年8月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/09/01/%E6%A0%91%E8%8E%93%E6%B4%BE%E2%80%94%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" title="树莓派-花生壳-内网穿透">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">树莓派-花生壳-内网穿透</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/19/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%92%8C%E9%85%8D%E7%BD%AE/" title="树莓派安装系统和配置">
+                        <span class="hidden-mobile">树莓派安装系统和配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

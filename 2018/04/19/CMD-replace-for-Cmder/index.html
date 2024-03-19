@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="就如同封面一样，Cmder 看着就令人赏心悦目。微软自带 CMD 就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。Cmder安装 这是Cmder官网，Cmder你可以选择两种版本，Mini和Full 这俩的区别我也不是很清楚，看网上说的也没有什么说服力🤔。我下载Full版本(zip100M)。下载地址  下载完毕">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cmder 更好的选择">
+<meta property="og:url" content="http://example.com/2018/04/19/CMD-replace-for-Cmder/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="就如同封面一样，Cmder 看着就令人赏心悦目。微软自带 CMD 就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。Cmder安装 这是Cmder官网，Cmder你可以选择两种版本，Mini和Full 这俩的区别我也不是很清楚，看网上说的也没有什么说服力🤔。我下载Full版本(zip100M)。下载地址  下载完毕">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/cmder%E5%88%9D%E5%A7%8B%E6%89%93%E5%BC%80%E5%9B%BE.png">
+<meta property="og:image" content="http://begild-one.top/%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fcmder.png">
+<meta property="og:image" content="http://begild-one.top/cmder%20here%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="http://begild-one.top/cmder%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF.png">
+<meta property="article:published_time" content="2018-04-19T06:35:31.000Z">
+<meta property="article:modified_time" content="2018-12-04T14:42:14.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="cmder">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/cmder%E5%88%9D%E5%A7%8B%E6%89%93%E5%BC%80%E5%9B%BE.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Cmder 更好的选择 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Cmder 更好的选择</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-04-19 14:35" pubdate>
+          2018年4月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Cmder 更好的选择</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h6 id="就如同封面一样，Cmder-看着就令人赏心悦目。微软自带-CMD-就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。"><a href="#就如同封面一样，Cmder-看着就令人赏心悦目。微软自带-CMD-就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。" class="headerlink" title="就如同封面一样，Cmder 看着就令人赏心悦目。微软自带 CMD 就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。"></a>就如同封面一样，Cmder 看着就令人赏心悦目。微软自带 CMD 就不谈了好吧，不过Windows本身就不是擅长用控制台和用户打交道的系统，所以这样也无可厚非吧。不过现在有了更好的选择：Cmder。<!----more----></h6><h2 id="Cmder安装"><a href="#Cmder安装" class="headerlink" title="Cmder安装"></a>Cmder安装</h2><ul>
+<li><p>这是<a target="_blank" rel="noopener" href="http://cmder.net/">Cmder</a>官网，Cmder你可以选择两种版本，Mini和Full 这俩的区别我也不是很清楚，看网上说的也没有什么说服力🤔。我下载Full版本(zip100M)。<a target="_blank" rel="noopener" href="https://github.com/cmderdev/cmder/releases/">下载地址</a></p>
+</li>
+<li><p>下载完毕之后直接解压到你喜欢的目录下面就 OK 了(自己建一个根目录啊他自己没有外封根目录的😅)，点击软件根目录下面的’Cmder.exe’即可启动 Cmder 软件。</p>
+<p><img src="http://begild-one.top/cmder%E5%88%9D%E5%A7%8B%E6%89%93%E5%BC%80%E5%9B%BE.png" srcset="/img/loading.gif" lazyload alt="cmder初始打开图"></p>
+</li>
+</ul>
+<h2 id="添加-Cmder-环境变量"><a href="#添加-Cmder-环境变量" class="headerlink" title="添加 Cmder 环境变量"></a>添加 Cmder 环境变量</h2><ol>
+<li><p>操作流程：此电脑—&gt;右键—&gt;属性(控制面板\所有控制面板项\系统)—&gt;侧边栏高级系统设置—&gt;右下角环境变量；</p>
+</li>
+<li><p>根据你的需要，是作为本用户使用还是作为全局其他用户也能使用选择添加为用户变量还是系统变量。找到<code>Path</code>变量条。<br>  a. 双击，在弹出来的编辑窗口选择新建按钮，然后输入 ‘Cmder.exe’ 所在的路径；<br>  b. 如果是win7貌似是直接编辑文本的吧,那就直接在最后面添加<code>;Cmder.exe 所在的路径</code> 我把 Cmder  安装在 <code>D:\cmder\</code> 下，结合起来就是<code>;D:\cmder\</code>。切记分号不能少🙂。<br>  <img src="http://begild-one.top/%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fcmder.png" srcset="/img/loading.gif" lazyload alt="添加环境变量cmder"></p>
+</li>
+</ol>
+<h2 id="添加右键-Cmder-Here"><a href="#添加右键-Cmder-Here" class="headerlink" title="添加右键 Cmder Here"></a>添加右键 Cmder Here</h2><p>这个是方便我们在任何文件夹直接打开 Cmder 。</p>
+<ol>
+<li>用管理员身份运行系统自带的 CMD，运行命令：<code>Cmder.exe /REGISTER ALL</code> (没有报错)。</li>
+<li>任意 Cmder 窗口—&gt;标题栏—&gt;右键—&gt;Settings…—&gt;Startup—&gt;Task ;</li>
+<li>依次点击命令组下所有的命令任务在右下方的编辑框后面加<code> -new_console</code>  (前导空格别忘了) ;</li>
+<li>关闭设置窗口~，设置完毕。在任意目录下右键即可看到 Cmder Here  字样的菜单。<br><img src="http://begild-one.top/cmder%20here%E8%AE%BE%E7%BD%AE.png" srcset="/img/loading.gif" lazyload alt="Cmder Here设置"></li>
+</ol>
+<h2 id="自定义终端符号"><a href="#自定义终端符号" class="headerlink" title="自定义终端符号"></a>自定义终端符号</h2><p>这是个花里胡哨的操作😬。分为两个:  powershell 和 cmd .</p>
+<ol>
+<li>修改 cmd 的提示符：用文本编辑软件打开 软件根目录\vendor\clink.lua 文件，<ul>
+<li>找到大概47行左右，两句话 <code> lambda = &quot;λ&quot;</code> 和  <code>lambda = &quot;(&quot;..env..&quot;) λ&quot;</code></li>
+<li>替换 λ 为你喜欢的，我替换成 ღ (可以用搜狗特殊字符找一下自己喜欢的😹)。</li>
+</ul>
+</li>
+<li>修改 powershell  的提示符：打开 clink.lua同级目录下的profile.ps1 文件。<ul>
+<li>找到大概121行，Utility\Write-Host “&#96;nλ “ -NoNewLine,</li>
+<li>找到157行左右，两句话 <code>λ &lt;PostPrompt&gt; &lt;repl input&gt;</code> 和 <code>λ &lt;PostPrompt&gt;</code>  </li>
+<li>将 λ 替换为你想要的。</li>
+</ul>
+</li>
+<li>重启软件完成设置。</li>
+</ol>
+<h2 id="设置终端背景"><a href="#设置终端背景" class="headerlink" title="设置终端背景"></a>设置终端背景</h2><ol>
+<li>任意 Cmder 窗口—&gt;标题栏—&gt;右键—&gt;Settings…—&gt;Main—&gt;Background ;</li>
+<li>勾选使用背景图像，在路径里找一张你喜欢的背景图片设置为背景 ;</li>
+<li>在暗化调整(Darking)选项，可以调整图片的防止掩盖终端字体显示不清楚  ;</li>
+<li>在放置方式管理(Placement)列表里可以选择你想把图片作何种放置(我设置的伸缩铺满窗口Stretch-Fill)。<br>你也可以通过背景插件 Far Manager 进行设置。<br><img src="http://begild-one.top/cmder%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF.png" srcset="/img/loading.gif" lazyload alt="cmder设置背景"></li>
+</ol>
+<h2 id="解决中文乱码"><a href="#解决中文乱码" class="headerlink" title="解决中文乱码"></a>解决中文乱码</h2><p>使用默认的 cmder 中文会被识别为 <code>\数字</code> 的组合 根本没法看。</p>
+<ol>
+<li>任意 Cmder 窗口—&gt;标题栏—&gt;右键—&gt;Settings…—&gt;Environment ;</li>
+<li>在右侧编辑框里另起一行写入<code>set LC_ALL=zh_CN.UTF-8</code></li>
+<li>完成设置，重启 cmder 生效。、<br>远程ssh连接服务器中文依然会乱码…。</li>
+</ol>
+<h2 id="配色主题"><a href="#配色主题" class="headerlink" title="配色主题"></a>配色主题</h2><ol>
+<li>任意 Cmder 窗口—&gt;标题栏—&gt;右键—&gt;Settings…—&gt;Features—&gt;Colors ;</li>
+<li>上方 Schemes 列表里选择你喜欢的配色方案~。</li>
+</ol>
+<h2 id="alias功能"><a href="#alias功能" class="headerlink" title="alias功能"></a>alias功能</h2><p>Cmder提供的 alias 功能可以让我们用较为简短易记的单词指令替代很长的语法指令。在终端输入指令 <code>alias</code> 即可查看别名对应的真正语法指令，可以通过<code>软件根目录\config\user-aliases.cmd</code> 写人自己需要用到的却又难记的语法指令和别名的对应式子。<br>比如我想要去我bolg所在的目录。每次都 cd 慢慢过去很烦，我就可以用 <code>blog =cd /d &quot;E:\GitHome\blog&quot;</code> 添加到 user-aliases.cmd 文件里，之后再终端直接输入blog就切换到blog的目录里。<br>登录服务器可以用这个配合putty实现<code>Tencent=&quot;D:\Program Files\PuTTY\plink.exe&quot; 255.255.255.255 -l root -pw &quot;12346578&quot; </code>。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><ol>
+<li>cmder直接支持 ctrl+c 和 ctrl+v，在终端里双击选中即已经复制不需要用ctrl+c。</li>
+<li>支持 vim 编辑器，同样的编辑方式和语法。</li>
+<li>其他的一些设置诸如文字大小，默认启动也可以自行了解一下。</li>
+<li>Cmder 核心就是基于 ConEmu 做的，不过外面加了大量的Linux下的工具命令。很多Linux的命令在上面都可以运行。</li>
+</ol>
+<p>cmder github地址: <a target="_blank" rel="noopener" href="https://github.com/cmderdev/cmder">https://github.com/cmderdev/cmder</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Tools/" class="category-chain-item">Tools</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/cmder/" class="print-no-link">#cmder</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cmder 更好的选择</div>
+      <div>http://example.com/2018/04/19/CMD-replace-for-Cmder/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年4月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/04/19/Linux-Subsystem-Gui/" title="Linux子系统图形界面">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux子系统图形界面</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/04/19/Win10-Linux-Subsystems/" title="Win10下Linux子系统的启用">
+                        <span class="hidden-mobile">Win10下Linux子系统的启用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="远程访问树莓派树莓派一般都是接在路由器下面的，当然是内网啦，在外面的时候是访问不了的，这时候就需要内网穿透才能实现外网依然能够访问到树莓派。内网穿透的软件网上有很多，这里选择花生壳，貌似挺有名的。 花生壳注册官网https:&#x2F;&#x2F;hsk.oray.com&#x2F;.  打开之后在右上角有登录注册。 点击注册，同意隐私政策，填写账号密码手机号，按照正常流程走就OK了。貌似后续是会提示你进行实名制的，嫌麻烦可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派-花生壳-内网穿透">
+<meta property="og:url" content="http://example.com/2018/09/01/%E6%A0%91%E8%8E%93%E6%B4%BE%E2%80%94%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="远程访问树莓派树莓派一般都是接在路由器下面的，当然是内网啦，在外面的时候是访问不了的，这时候就需要内网穿透才能实现外网依然能够访问到树莓派。内网穿透的软件网上有很多，这里选择花生壳，貌似挺有名的。 花生壳注册官网https:&#x2F;&#x2F;hsk.oray.com&#x2F;.  打开之后在右上角有登录注册。 点击注册，同意隐私政策，填写账号密码手机号，按照正常流程走就OK了。貌似后续是会提示你进行实名制的，嫌麻烦可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%B3%A8%E5%86%8C%E6%88%90%E5%8A%9F.png">
+<meta property="og:image" content="http://upload-cdn.oray.com/upload/help/1806/201806251335371098.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E5%BC%80%E9%80%9A%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/TPLINK%E8%AE%BE%E7%BD%AEDDNS.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E5%85%AC%E7%BD%91SSH%E9%AA%8C%E8%AF%81.png">
+<meta property="article:published_time" content="2018-09-01T15:53:13.000Z">
+<meta property="article:modified_time" content="2018-12-04T15:09:55.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="花生壳">
+<meta property="article:tag" content="内网穿透">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%B3%A8%E5%86%8C%E6%88%90%E5%8A%9F.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>树莓派-花生壳-内网穿透 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">树莓派-花生壳-内网穿透</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-09-01 23:53" pubdate>
+          2018年9月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">树莓派-花生壳-内网穿透</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="远程访问树莓派"><a href="#远程访问树莓派" class="headerlink" title="远程访问树莓派"></a>远程访问树莓派</h2><p>树莓派一般都是接在路由器下面的，当然是内网啦，在外面的时候是访问不了的，这时候就需要<a target="_blank" rel="noopener" href="http://service.oray.com/question/5571.html">内网穿透</a>才能实现外网依然能够访问到树莓派。内网穿透的软件网上有很多，这里选择花生壳，貌似挺有名的。</p>
+<h2 id="花生壳注册"><a href="#花生壳注册" class="headerlink" title="花生壳注册"></a>花生壳注册</h2><p>官网<a target="_blank" rel="noopener" href="https://hsk.oray.com/">https://hsk.oray.com/</a>.</p>
+<ol>
+<li>打开之后在右上角有登录注册。</li>
+<li>点击注册，同意隐私政策，填写账号密码手机号，按照正常流程走就OK了。貌似后续是会提示你进行实名制的，嫌麻烦可以不用实名制拍照上传啥的,不操作这一步。</li>
+<li>注册成功会送你一个免费的花生壳域名用作以后使用，你也可以免费注册一个自定义的壳域名，不过后缀是指定的。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%B3%A8%E5%86%8C%E6%88%90%E5%8A%9F.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h2 id="安装树莓派花生壳客户端"><a href="#安装树莓派花生壳客户端" class="headerlink" title="安装树莓派花生壳客户端"></a>安装树莓派花生壳客户端</h2><p>下载最新安装包<a target="_blank" rel="noopener" href="https://hsk.oray.com/download">https://hsk.oray.com/download</a>，选择树莓派下载。也可以通过SSH运行下面命令直接获得并安装。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> <span class="hljs-string">/home/pi/Documents</span> &amp;&amp; mkdir hskoray &amp;&amp; <span class="hljs-keyword">cd</span> hskoray  <span class="hljs-string">//</span>创建下载目录<br>wget  https:<span class="hljs-string">//hsk.oray.com/download/download</span>?id=25 -O phddns_rapi.armhf.deb <span class="hljs-string">//</span>下载<br>sudo dpkg -i phddns_rapi.armhf.deb <span class="hljs-string">//</span>安装<br></code></pre></td></tr></table></figure>
+<p>安装完毕会输出SN码和默认的登录密码，这个需要保存一下SN码，之后添加设备需要用到。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">pi@BeGild<span class="hljs-emphasis">_Raspi:~/Documents/hskoray $ sudo dpkg -i phddns_rapi_3.0.1.armhf.deb</span><br><span class="hljs-emphasis">正在选中未选择的软件包 phddns。</span><br><span class="hljs-emphasis">(正在读取数据库 ... 系统当前共安装有 129540 个文件和目录。)</span><br><span class="hljs-emphasis">正准备解包 phddns_rapi_3.0.1.armhf.deb  ...</span><br><span class="hljs-emphasis">正在解包 phddns (3.0.2) ...</span><br><span class="hljs-emphasis">正在设置 phddns (3.0.2) ...</span><br><span class="hljs-emphasis">2018-09-02 02:32:31     = Debug =       [http_call] attempt to connect server: rapi.ephapi.oray.net/device/register</span><br><span class="hljs-emphasis">2018-09-02 02:32:31     = Debug =       [http_call] create new stream because alive streams is empty.</span><br><span class="hljs-emphasis">2018-09-02 02:32:31     - Info  -       [http_</span>call] connect server: rapi.ephapi.oray.net:443(121.40.234.27)<br><span class="hljs-code">  . Performing the SSL/TLS handshake...</span><br><span class="hljs-code"> ok</span><br><span class="hljs-code">  . Verifying peer X.509 certificate...</span><br><span class="hljs-code"> ok</span><br>2018-09-02 02:32:32     - Info  -       register ok<br>SN : RA<span class="hljs-strong">***cac**</span><span class="hljs-strong">*4a4*</span>*<br>fastcode=2a868<span class="hljs-strong">****b29e267**</span><span class="hljs-strong">**be05ee803a5</span><br><span class="hljs-strong">SN : RA**</span><span class="hljs-strong">*cac*</span><span class="hljs-strong">**4a4**</span><br>2018-09-02 02:32:32     - Info  -       [Main] oraysl started as a daemon.<br>Phddns Service install success.<br><br><span class="hljs-code">+--------------------------------------------------+</span><br><span class="hljs-section">|             Oray PeanutHull Linux 3.0            |</span><br><span class="hljs-section">+--------------------------------------------------+</span><br><span class="hljs-section">|  SN: RA***cac***4a4**   Default password: admin  |</span><br><span class="hljs-section">+--------------------------------------------------+</span><br><span class="hljs-section">|    Remote Management Address http://b.oray.com   |</span><br><span class="hljs-section">+--------------------------------------------------+</span><br>正在处理用于 systemd (232-25+deb9u4) 的触发器 ...<br>pi@BeGild_Raspi:~/Documents/hskoray $<br><br></code></pre></td></tr></table></figure>
+<p>其余的相关功能命令大致如下，可以通过输入<code>phddns</code> 获得。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coq">sudo dpkg -r phddns //卸载花生壳<br>phddns start（启动）| <span class="hljs-type">stop</span>（停止）| <span class="hljs-type">restart</span>（重启）<br>phddns status（状态）| <span class="hljs-type">version</span>（版本）|<span class="hljs-type">reset</span>（重置）<br></code></pre></td></tr></table></figure>
+<p>日志保存在<code>/var/log/phddns</code>目录下。官方的教程见<a target="_blank" rel="noopener" href="http://service.oray.com/question/2680.html">花生壳 3.0 for 树莓派 安装使用攻略</a></p>
+<h2 id="绑定设备"><a href="#绑定设备" class="headerlink" title="绑定设备"></a>绑定设备</h2><p>绑定需要先登录远程管理设备页面。点击<a target="_blank" rel="noopener" href="https://b.oray.com/">https://b.oray.com/</a>，打开远程管理页面，输入刚生成的树莓派的SN码，输入默认密码admin进行登录。第一次登陆会让你完善信息填写手机号等信息。<br>登录之后会提示你这个是内部的账号需要和你刚注册的账号进行”绑定”。点击<code>立即切换</code>即可切换到登录界面,输入你注册的账号和密码登录,设备自然就归属到你的名下了。<br><a target="_blank" rel="noopener" href="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E8%AE%BE%E5%A4%87%E7%BB%91%E5%AE%9A.png"></a></p>
+<h2 id="开通内网穿透"><a href="#开通内网穿透" class="headerlink" title="开通内网穿透"></a>开通内网穿透</h2><p>开通内网穿透体验版仅需6元，可以在绑定设备后在<a target="_blank" rel="noopener" href="https://b.oray.com/forward/">设备管理界面</a>点击左边侧栏的内网穿透进行开通.<br><img src="http://upload-cdn.oray.com/upload/help/1806/201806251335371098.png" srcset="/img/loading.gif" lazyload><br>也可以在<a target="_blank" rel="noopener" href="https://hsk.oray.com/">首页</a>左下角点击进入开通页面开通.<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E5%BC%80%E9%80%9A%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="路由器打开DDNS"><a href="#路由器打开DDNS" class="headerlink" title="路由器打开DDNS"></a><del>路由器打开DDNS</del></h2><p>emmm我看别人的教程都没说要设置DDNS了，但是我的不设置的话就不成功。所以这里有待考究[2018.10.04]这里找客服咨询过来，不需要设置路由器 DDNS ，不仅如此，如果设置了DDNS花生壳会提示账号重复登录的问题，之前不成功的原因是因为需要一定的刷新(映射？)时间。</p>
+<ul>
+<li>设置过程就是在浏览器输入路由器管理地址，一般就是<code>192.168.1.0</code>或者<code>192.168.1.1</code>，输入管理员密码登录，我的是TPLINK WR855N，是支持DDNS的。</li>
+<li>登录之后的页面里选择应用管理-&gt; DDNS 进入，在服务提供者选择花生壳，输入自己的账号和密码勾选自动登录然后登录就OK了。</li>
+<li>对了这里建议使用路由器的IP和MAC地址绑定应用，将IP固定分配给树莓派，这样树莓派在内网的IP就固定了.<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/TPLINK%E8%AE%BE%E7%BD%AEDDNS.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="添加端口映射"><a href="#添加端口映射" class="headerlink" title="添加端口映射"></a>添加端口映射</h2><p>开通了端口映射之后，在端口映射页面右边会出现一个增加端口映射的按钮。点击即可添加.<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="注册免费的自定义壳域"><a href="#注册免费的自定义壳域" class="headerlink" title="注册免费的自定义壳域"></a>注册免费的自定义壳域</h2><p>注册了花生壳账号之后会给一个选一个自定义壳域名的机会。在设备管理页面点击侧边<code>我的域名</code>,左上角有个<code>注册壳域名</code>.点击之后进入注册界面，写一下自己喜欢的前缀在免费的后缀里选择一个，点击搜索，没有被别人注册的话就可以自注册了。<br>用这个壳域名添加映射同样可以使用。</p>
+<h2 id="验证访问"><a href="#验证访问" class="headerlink" title="验证访问"></a>验证访问</h2><p>打开SSH软件，新建一个连接填写主机地址(添加映射的壳域名)，端口(花生壳为你分配的随机端口，在<a target="_blank" rel="noopener" href="https://b.oray.com/">设备管理页面</a>-&gt;内网穿透-&gt;映射列表-&gt;壳域名-&gt;后可以看到)，输入登录账号pi和你的树莓派密码即可，双击新建的连接，能连接成功就是通了的。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE-%E8%8A%B1%E7%94%9F%E5%A3%B3-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E5%85%AC%E7%BD%91SSH%E9%AA%8C%E8%AF%81.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>经过上面的一系列步骤树莓派已经可以在外网被访问了，这里端口映射添加的是SSH指定的22端口，当然你也可以根据需要指定其他的端口，不过免费版本的只支持两个端口映射。经过使用，这个为你分配的临时端口其实时间挺长的，不会几小时就变一次，两三天都不变一次的。<br>可以下载官方的花生壳管理APP,<a target="_blank" rel="noopener" href="https://hsk.oray.com/download/download?id=36">Android</a>&#x2F;<a target="_blank" rel="noopener" href="https://hsk.oray.com/download/download?id=37">IOS</a>进行管理和查看状态。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/" class="category-chain-item">树莓派</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%8A%B1%E7%94%9F%E5%A3%B3/" class="print-no-link">#花生壳</a>
+      
+        <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="print-no-link">#内网穿透</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>树莓派-花生壳-内网穿透</div>
+      <div>http://example.com/2018/09/01/树莓派—花生壳-内网穿透/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年9月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/26/%E6%A0%91%E8%8E%93%E6%B4%BE%E2%80%94%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="树莓派|云服务器-MQTT环境搭建">
+                        <span class="hidden-mobile">树莓派|云服务器-MQTT环境搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

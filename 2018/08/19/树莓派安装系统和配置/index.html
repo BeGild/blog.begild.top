@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近打算玩一玩树莓派，感觉从毕业之后荒了蛮久没有新的东西注入了。其实有在考虑要不要记录这个安装的过程，因为其实教程已经漫天飞了，有重复造轮子之嫌。不过听说好记性不如烂笔头，记一下方便回顾也很有成就感不是吗？顺便说一下我的机器：树莓派3B+，因为穷，只买了裸板嘤嘤嘤。 下载树莓派系统 从官网的下载页面https:&#x2F;&#x2F;www.raspberrypi.org&#x2F;downloads&#x2F;可以看到树莓派支持的系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派安装系统和配置">
+<meta property="og:url" content="http://example.com/2018/08/19/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%92%8C%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="最近打算玩一玩树莓派，感觉从毕业之后荒了蛮久没有新的东西注入了。其实有在考虑要不要记录这个安装的过程，因为其实教程已经漫天飞了，有重复造轮子之嫌。不过听说好记性不如烂笔头，记一下方便回顾也很有成就感不是吗？顺便说一下我的机器：树莓派3B+，因为穷，只买了裸板嘤嘤嘤。 下载树莓派系统 从官网的下载页面https:&#x2F;&#x2F;www.raspberrypi.org&#x2F;downloads&#x2F;可以看到树莓派支持的系统">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/etcher%E4%BD%BF%E7%94%A8.gif">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/%E7%A9%BA%E9%97%B4%E6%9C%AA%E5%88%86%E9%85%8D.png">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E6%9C%BA.jpg">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/raspi-config.jpg">
+<meta property="og:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/SSH%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE.png">
+<meta property="article:published_time" content="2018-08-19T05:12:23.000Z">
+<meta property="article:modified_time" content="2018-12-04T15:20:39.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="树莓派安装系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/etcher%E4%BD%BF%E7%94%A8.gif">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>树莓派安装系统和配置 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">树莓派安装系统和配置</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-08-19 13:12" pubdate>
+          2018年8月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">树莓派安装系统和配置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近打算玩一玩树莓派，感觉从毕业之后荒了蛮久没有新的东西注入了。其实有在考虑要不要记录这个安装的过程，因为其实教程已经漫天飞了，有重复造轮子之嫌。不过听说好记性不如烂笔头，记一下方便回顾也很有成就感不是吗？顺便说一下我的机器：树莓派3B+，因为穷，只买了裸板嘤嘤嘤。<!---more---></p>
+<h2 id="下载树莓派系统"><a href="#下载树莓派系统" class="headerlink" title="下载树莓派系统"></a>下载树莓派系统</h2><ol>
+<li>从官网的下载页面<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a>可以看到树莓派支持的系统有好多种，这里下载官方的 RASPBIAN 系统，这个是基于 Debian 进行开发的。当然你也可以尝试一下 Ubuntu MATE 也蛮不错的。</li>
+<li>点击大大的 PASPBIAN 图标可以进入选择下载 PASPBIAN DESKTOP 版还是 Mini 版。这里选择DESKTOP吧，安装好之后可以选择关闭视频输出用 VNC 远程桌面的。</li>
+<li>点击 RASPBIAN STRETCH WITH DESKTOP 板块的<a target="_blank" rel="noopener" href="https://downloads.raspberrypi.org/raspbian_latest">Download Zip</a> 按钮即可开始下载。点击-&gt;<a target="_blank" rel="noopener" href="https://downloads.raspberrypi.org/raspbian_latest">这里</a>可以下载最新的桌面版 PASPIAN 系统。</li>
+<li>下载完成之后就可以开始下一步了，不用解压，就保持为 zip 格式。</li>
+</ol>
+<h2 id="安装烧录镜像的工具-Etcher"><a href="#安装烧录镜像的工具-Etcher" class="headerlink" title="安装烧录镜像的工具 Etcher"></a>安装烧录镜像的工具 Etcher</h2><p>这个工具是linux macOS Windows都可以支持的，比起 Win32DiskImager来，长的还不错，界面也很简单(超级简单)。</p>
+<ol>
+<li>去官网<a target="_blank" rel="noopener" href="https://etcher.io/">https://etcher.io/</a> 下载最新版本。</li>
+<li>下载完毕之后安装，安装完毕打开就可以使用了。</li>
+</ol>
+<h2 id="烧写系统镜像"><a href="#烧写系统镜像" class="headerlink" title="烧写系统镜像"></a>烧写系统镜像</h2><ol>
+<li>选择你下载的系统镜像文件(.zip)</li>
+<li>选择你写的SD卡所在的盘符。</li>
+<li>点击 Flash，等待进度的完成。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/etcher%E4%BD%BF%E7%94%A8.gif" srcset="/img/loading.gif" lazyload alt="etcher使用"></li>
+</ol>
+<p>烧录完毕之后，SD卡会被分区为两个盘符，一个名字叫 boot(启动分区) 另一个叫 rootfs(根文件系统)。boot分区只有几十M，除去 rootfs 之外剩下的SD卡空间都是未被分配的状态所以 rootfs 只比系统大一点，等启动树莓派之后在树莓派的配置项里选择 SD 卡扩容把整个 SD 卡剩余空间合并到 rootfs 里。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/%E7%A9%BA%E9%97%B4%E6%9C%AA%E5%88%86%E9%85%8D.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="系统视频输出的配置"><a href="#系统视频输出的配置" class="headerlink" title="系统视频输出的配置"></a>系统视频输出的配置</h2><p>这个配置是用于正确输出视频信号给显示器显示，树莓派会自动检测显示器属性自动调整的，当你的显示效果没有达到预期(HDMI-&gt;VGA)时可以通过手动配置一下。<br>配置项在  <font color=#00ffff size=4>&#x2F;boot&#x2F;config.txt</font>文件里。打开该配置文件进行修改即可。<br>关于配置的介绍可以在<a target="_blank" rel="noopener" href="http://rpf.io/configtxt">这里</a>看到。这里的配置需要贴合你显示器的属性，设置的教程可以参照-&gt;<a target="_blank" rel="noopener" href="http://shumeipai.nxez.com/2013/08/31/custom-display-resolution-raspberry-pie.html">自定义树莓派的显示分辨率</a> 进行显示器分辨率<code>hdmi_mode</code>的调整。我的显示器是2K屏，计算机显示器，配置项如下。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># uncomment if you get no picture on HDMI for a default &quot;safe&quot; mode</span><br><span class="hljs-attr">hdmi_safe</span>=<span class="hljs-number">1</span><br><span class="hljs-comment"># uncomment this if your display has a black border of unused pixels visible</span><br><span class="hljs-comment"># and your display can output without overscan</span><br><span class="hljs-attr">disable_overscan</span>=<span class="hljs-number">1</span><br><span class="hljs-comment"># uncomment if hdmi display is not detected and composite is being output</span><br><span class="hljs-attr">hdmi_force_hotplug</span>=<span class="hljs-number">1</span><br><span class="hljs-comment"># uncomment to force a specific HDMI mode (this will force VGA)</span><br><span class="hljs-attr">hdmi_group</span>=<span class="hljs-number">2</span><br><span class="hljs-attr">hdmi_mode</span>=<span class="hljs-number">76</span><br><span class="hljs-attr">hdmi_ignore_edid</span>=<span class="hljs-number">0</span>xa5000080<br><span class="hljs-comment"># uncomment to force a HDMI mode rather than DVI. This can make audio work in</span><br><span class="hljs-comment"># DMT (computer monitor) modes</span><br><span class="hljs-attr">hdmi_drive</span>=<span class="hljs-number">2</span><br><span class="hljs-comment"># uncomment to increase signal to HDMI, if you have interference, blanking, or</span><br><span class="hljs-comment"># no display</span><br><span class="hljs-attr">config_hdmi_boost</span>=<span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+<p>配置完毕，插上SD卡、hdmi线、电源即可看到树莓派启动，如果使用的是HDMI转VGA为了保证视频的稳定这里最好使用单独电源供电的转换头。开机显示如下：<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E6%9C%BA.jpg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="系统选项配置"><a href="#系统选项配置" class="headerlink" title="系统选项配置"></a>系统选项配置</h2><p>插上鼠标键盘,启动系统之后打开终端，输入<code>sudo raspi-config</code>命令即可进行配置，界面如下。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/raspi-config.jpg" srcset="/img/loading.gif" lazyload><br>配置界面的详细说明如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">1.</span> 修改登录密码。<br><span class="hljs-bullet">2.</span> 网络选项：<br><span class="hljs-bullet">    1.</span> 树莓派在网络上的名字(在路由器管理界面可以看到)<br><span class="hljs-bullet">    2.</span> WIFI名称和密码<br><span class="hljs-bullet">    3.</span> 网络是否可以被探测。<br><span class="hljs-bullet">3.</span> 启动选项：<br><span class="hljs-bullet">    1.</span> 启动选择桌面还是控制台，控制台就没有界面黑乎乎的。<br><span class="hljs-bullet">       1.</span> 控制台不自动登录<br><span class="hljs-bullet">       2.</span> 控制台自动登录<br><span class="hljs-bullet">       3.</span> 桌面环境不自动登录<br><span class="hljs-bullet">       4.</span> 桌面环境自动登录<br><span class="hljs-bullet">    2.</span> 是否在启动是等待网络连接完成。<br><span class="hljs-bullet">    3.</span> 是否启用画面过渡。用画面过渡开机过程，还是使用文本过渡(开机的时候刷刷刷的文本启动信息)。<br><span class="hljs-bullet">4.</span> 本地化选项：<br><span class="hljs-bullet">    1.</span> 选择语言。在弹出的列表里上下移动直至找到 zh<span class="hljs-emphasis">_CN.UTF-8 UTF-8。空格进行选择，回车进行确认。</span><br><span class="hljs-emphasis">    2. 选择时区。Etc</span><br><span class="hljs-emphasis">    3. 选择键盘布局。国际标准105键。</span><br><span class="hljs-emphasis">    4. 选择WIFI地区。CN-China</span><br><span class="hljs-emphasis">5. 接口选项：这里主要是树莓派对外的接口功能使能。</span><br><span class="hljs-emphasis">    1. 摄像头。选择是否使用摄像头。根据需要选择使能。</span><br><span class="hljs-emphasis">    2. SSH。选择是否启用SSH进行远程连接。选择使能。</span><br><span class="hljs-emphasis">    3. VNC.选择是否启用VNC作为远程桌面连接。根据需要选择使能。</span><br><span class="hljs-emphasis">    4. SPI。选择是否启用SPI接口。根据需要选择使能。</span><br><span class="hljs-emphasis">    5. IIC。选择是否启用IIC接口。根据需要选择使能。</span><br><span class="hljs-emphasis">    6. 串口Serial。选择是否启用串口。根据需要选择使能。</span><br><span class="hljs-emphasis">    7. 1-Wire。选择是否启用单线接口。根据需要选择使能。</span><br><span class="hljs-emphasis">    8. Remote GPIO。选择是否允许远程控制GPIO。根据需要选择使能。</span><br><span class="hljs-emphasis">6. 超频选项：CPU超频。</span><br><span class="hljs-emphasis">7. 高级选项：</span><br><span class="hljs-emphasis">   1. 扩展SD卡文件系统，也就是在刷入树莓派系统时候会有没分配的空闲空间，通过这个选项就可以将SD卡完全整合起来。</span><br><span class="hljs-emphasis">   2. 过扫描选项。如果显示器显示有黑边可以开启这个选项。关于过扫描可以看http://bbs.a9vg.com/thread-2358167-1-1.html。</span><br><span class="hljs-emphasis">   3. 修改显卡可用内存大小。默认值64</span><br><span class="hljs-emphasis">   4. 声音选项。选择声音的输出方向。</span><br><span class="hljs-emphasis">      1. 自动。根据有效的输出源输出。</span><br><span class="hljs-emphasis">      2. 通过3.5耳机接口输出</span><br><span class="hljs-emphasis">      3. 通过HDMI传输音频。</span><br><span class="hljs-emphasis">   5. 分辨率选项。选择特定的分辨率作为输出视频的分辨率。根据显示器配置进行选择。</span><br><span class="hljs-emphasis">   6. 像素点加倍选项。选择是否将像素进行2*2映射。我选择之后画面显示不全，很模糊。不知道干嘛用的感觉像是分辨率变低了。</span><br><span class="hljs-emphasis">   7. Open GL驱动选项。选择是否启用open GL桌面驱动程序。这个是硬件加速的选项，如果使用桌面可以选择启用该功能。这个选项我其实并没有什么感觉，没有试过。可以看下https://www.jianshu.com/p/2438d2c76cdb。</span><br><span class="hljs-emphasis">      1. Full KMS 这个效率更高全部通过内核直接输出，但是兼容性差一些，遇到一些远程桌面软件可能会出问题。</span><br><span class="hljs-emphasis">      2. FAKE KMS 该选项兼容性好一些。</span><br><span class="hljs-emphasis">      3. 使用软件渲染。不使用Open GL。</span><br><span class="hljs-emphasis">8. 升级。检查升级系统。</span><br><span class="hljs-emphasis">9. 关于树莓派配置工具的说明。</span><br></code></pre></td></tr></table></figure>
+<p>我用的系统2018-06-27-raspbian-stretch是可以通过桌面左上角的小树莓图标-&gt;首选项-&gt;树莓派配置进行配置的。<br>配置完毕之后选择 Finish 按钮进行重启，生效更改。<br>我的配置大致如下：<br>    修改登录密码、使用控制台自动登录、启用 SSH 和 VNC 、不超频、扩展SD卡、不进行像素点加倍、不使用Open GL(不好意思我只用SSH连接)，另外GPU内存我就按照的默认64M来，之后需要再修改吧。</p>
+<h2 id="安装中文输入法"><a href="#安装中文输入法" class="headerlink" title="安装中文输入法"></a>安装中文输入法</h2><p>虽然之后都是使用SSH进行连接，但是！！！偶尔使用桌面时依然不能忍受没有中文的情况啦。运行下面的三条命令进行安装，最后使用reboot重启系统生效更改。通过 ctrl+space 可以切换。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sudo apt-<span class="hljs-keyword">get</span> install fcitx <span class="hljs-comment">#安装 fctix 输入法框架</span><br>sudo apt-<span class="hljs-keyword">get</span> install fcitx-pinyin     <span class="hljs-comment"># 安装fcitx拼音</span><br>sudo apt-<span class="hljs-keyword">get</span> install fcitx-googlepinyin  <span class="hljs-comment"># 安装google拼音</span><br></code></pre></td></tr></table></figure>
+<p>这样就完成了树莓派个性化的配置啦。</p>
+<h2 id="使用SSH进行树莓派的连接"><a href="#使用SSH进行树莓派的连接" class="headerlink" title="使用SSH进行树莓派的连接"></a>使用SSH进行树莓派的连接</h2><p>这里推荐使用Finall shell这个远程连接软件。可以实时监控CPU、内存、磁盘等的使用，可以有命令历史，自动补全等。免费版本已经够使用了。</p>
+<ol>
+<li>Windows 点击<a target="_blank" rel="noopener" href="http://www.hostbuf.com/downloads/finalshell_install.exe">下载</a>Finall shell最新版本。官网:<a target="_blank" rel="noopener" href="http://www.hostbuf.com/">http://www.hostbuf.com/</a>。官网看起来毫无美感，胜在简单没有广告.</li>
+<li>下载之后运行安装。安装完毕打开软件。可以看到一个右边是一些图表栏，用于显示当前系统一些信息。右边是命令行窗口，下面是远程文件管理系统可以用来传输文件。</li>
+<li>点击右上角文件夹样式的小图标打开连接管理器，点击左上角白色文件夹加号建立一个SSH连接。<ol>
+<li>输入连接名称(标识，方便查看比如：树莓派)。  </li>
+<li>主机，填入树莓派的IP地址。  <ul>
+<li>这里可以用树莓派运行 <code>ifconfig</code> 命令查看ip地址,应该是<code>192.168.1.*</code></li>
+<li>也可以通过浏览器输入<code>192.168.1.1��?92.168.1.0</code> 进入路由器管理界面查看树莓派的IP地址。</li>
+</ul>
+</li>
+<li>端口默认22.方法使用密码，用户名为 pi (树莓派默认用户名)，密码为你的登录密码。  </li>
+<li>点击<code>确定</code>建立连接成功。</li>
+</ol>
+</li>
+<li>双击新建的连接进行连接，会在主窗口的右边命令行栏新建一个连接分页，连接成功就能看到大致如下的界面。<br><img src="http://begild-one.top/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/SSH%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE.png" srcset="/img/loading.gif" lazyload></li>
+<li>软件的其他个性化配置自行摸索，大致有命令行主题，颜色等的配置吧。点击软件右上角的三条横线图标-&gt;选项可以找到。</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这样就完成树莓派的基本配置和使用了，利用 SSH 整个树莓派只需要连接一根USB电源线就可以愉快的玩耍了，当然这里的电源适配器一定要稳定电流足量(2A以上)，不要拿那种10块钱包邮的电源适配器。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/" class="category-chain-item">树莓派</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F/" class="print-no-link">#树莓派安装系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>树莓派安装系统和配置</div>
+      <div>http://example.com/2018/08/19/树莓派安装系统和配置/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年8月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/26/%E6%A0%91%E8%8E%93%E6%B4%BE%E2%80%94%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-EMQTT-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="树莓派|云服务器-MQTT环境搭建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">树莓派|云服务器-MQTT环境搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/22/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/" title="一种分层、高扩展性通信协议的总结">
+                        <span class="hidden-mobile">一种分层、高扩展性通信协议的总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

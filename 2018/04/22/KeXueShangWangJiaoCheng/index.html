@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="写在前面 如果你在在搜索资料方面在百度遇到了巨大挫折，我相信google能解决你问题。 在我个人看来百度适用于找贴近于生活常识简单的东西(当然你必须具备一定的辨识能力不要盲目相信，莆田系的惨剧不是不能重演)，就这些知识而言相对于google来说是比较好的。 在专业的知识方面百度对于google来说就是个孤儿。搜索来的东西词不达意，胡扯一通或者根本就没有相关有用的东西(有用的怕就是 CSDN 了其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="科学上Google">
+<meta property="og:url" content="http://example.com/2018/04/22/KeXueShangWangJiaoCheng/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="写在前面 如果你在在搜索资料方面在百度遇到了巨大挫折，我相信google能解决你问题。 在我个人看来百度适用于找贴近于生活常识简单的东西(当然你必须具备一定的辨识能力不要盲目相信，莆田系的惨剧不是不能重演)，就这些知识而言相对于google来说是比较好的。 在专业的知识方面百度对于google来说就是个孤儿。搜索来的东西词不达意，胡扯一通或者根本就没有相关有用的东西(有用的怕就是 CSDN 了其他">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/%E6%B3%A8%E5%86%8C%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://begild-one.top/Servers%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://begild-one.top/putty%E6%B7%BB%E5%8A%A0%E8%BF%9E%E6%8E%A5.png">
+<meta property="og:image" content="http://begild-one.top/SSR%E5%AF%BC%E5%85%A5%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="http://begild-one.top/FinalSpeed%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://begild-one.top/%E5%A4%A9%E5%AE%89%E9%97%A8.png">
+<meta property="article:published_time" content="2018-04-22T07:28:42.000Z">
+<meta property="article:modified_time" content="2018-12-04T14:39:30.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="科学上网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/%E6%B3%A8%E5%86%8C%E7%95%8C%E9%9D%A2.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>科学上Google - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">科学上Google</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-04-22 15:28" pubdate>
+          2018年4月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">科学上Google</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><ul>
+<li>如果你在在搜索资料方面在百度遇到了巨大挫折，我相信google能解决你问题。</li>
+<li>在我个人看来百度适用于找贴近于生活常识简单的东西(当然你必须具备一定的辨识能力不要盲目相信，莆田系的惨剧不是不能重演)，就这些知识而言相对于google来说是比较好的。</li>
+<li>在专业的知识方面百度对于google来说就是个孤儿。搜索来的东西词不达意，胡扯一通或者根本就没有相关有用的东西(有用的怕就是 CSDN 了其他的都是狗屁不通)。 <!---more---></li>
+<li>google搜索来的，基本如果是教程，数据手册，书本什么的前4条就能找到你要结果，属于比较专业的。我第一用google搜资料是因为百度实在是找不到那个芯片的数据手册(或许是我太菜了没能拨开那层层的迷雾)，那时候改一改 host 还是上了 google 的，一搜索第2条就是角标一个pdf字样，直接下载就是数据手册，从那以后我越发的觉得百度就是个傻逼。</li>
+<li>后来 <a target="_blank" rel="noopener" href="https://laod.cn/">老D博客</a> 给的 host 也时常不能用，不过后来有幸免费得了一个绿皮车的账号福利，滴滴滴成功上车。</li>
+<li>用了没多久觉得也不是很稳定，后来就决定自己学习搭一下然后就上google搜了一下<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1FHdq9srvpYqdcsvKfZnPqZQ1-pRaXeUrfz3mrOf-eeE/edit#">搭建教程(境外访问)</a>  通过这个教程也成功的自己开了车~，然后在这里记一下。</li>
+<li><a target="_blank" rel="noopener" href="http://wenshu.court.gov.cn/content/content?DocID=36f0191f-c617-4796-a271-a85600c6ad27">刘冰洋一审刑事判决书</a> 科学上网胖虎劝你谨言慎行，头脑清晰，高举社会主义伟大旗帜，坚决拥护中国共产党。</li>
+</ul>
+<h2 id="关于中国的互联网"><a href="#关于中国的互联网" class="headerlink" title="关于中国的互联网"></a>关于中国的互联网</h2><p>网络审查在各个国家都普遍存在着，它并不仅存在于中国。在全球的局势对中国都不利的当下，当局会过滤掉影响、危害到中国长远发展的信息，此时国家安全的意义更加重大。</p>
+<p>互联网上存在着大量终究不现实的、不客观的，甚至自相矛盾的抹黑当局政府言论，它们背后一般有西方政府或非政府组织资金支持。这些媒体包括但不限于一些港媒、境外网站。</p>
+<p>我们希望您能在遇到此类言论和见解时，不要不加思考地、情绪一度被煽动而不能克制地、盲目地相信这些片面或者歪曲事实的东西，而是要事实求是地思考，要摆脱情绪绑架的怪诞思维去理解。</p>
+<p>我们需要了解到，中国的发展总基调是“稳中求进”，中国社会的最核心问题就是稳定。失去稳定的中国将会是一盘散沙，面临分裂和肢解的危险。我们希望您了解当今中国发展的根本保证是什么，发展的过程中哪部分是主旋律，哪些是噪音；哪些是进取的，哪些是会开历史倒车的。我们需要维新，而不是革命。</p>
+<p>我们应该清醒和全面地认识问题，偏信西方媒体的言论、缺乏对国家的信任是不可取的。您的数据安全和隐私对您尤为重要。若这些信息不应当被西方掌握时，它对国家和民族的命运更为重要。出于此原因，当局可能会限制您的行为，我们不会也无法干预当局的任何政策和决定。</p>
+<p>所以，我们希望您在使用此服务时，不要盲目地攻击当局的做法。<br>原文(<a target="_blank" rel="noopener" href="https://github.com/racaljk/hosts/wiki/%E5%85%B3%E4%BA%8E%E4%B8%AD%E5%9B%BD%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91">https://github.com/racaljk/hosts/wiki/关于中国的互联网</a>)</p>
+<h2 id="搭建步骤1-购买vps"><a href="#搭建步骤1-购买vps" class="headerlink" title="搭建步骤1 购买vps"></a>搭建步骤1 购买vps</h2><ol>
+<li>购买一台 Vultr 主机，便宜😉稳定😉。<a target="_blank" rel="noopener" href="https://www.vultr.com/?ref=7288720">https://www.vultr.com/?ref=7288720</a>  点击这个链接即可注册（注意：如果关闭网页再从历史记录中打开则无效，所以如果不小心关闭了可以再点击上面的链接注册），在你通过这个链接注册并在30天内充值10美元的话我也会得10美元。vultr支持支付宝支付，最少面额是10美元🤙 。<br><img src="http://begild-one.top/%E6%B3%A8%E5%86%8C%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="注册界面"><br>密码必须包含大写字母小写字母数字，长度至少10位。注册完毕即可登录。第一次登录会发送一个验证邮箱的邮件到邮箱。</li>
+<li>登录成功，点击在侧边栏的 Billing ，在主页面的支付选项里可以选择多种方式，在这里可以使用 Alipay 支付，也就是我们所说的支付宝。点击右边会有快捷金额出现，最小的面额就是10美元，点击下方支付按钮会自动生成支持二维码，扫描即可支付。到账有可能有延迟，等一下就好了。到账之后会在右上角出现你的余额。</li>
+<li>完成支付之后。点击在侧边栏的 Servers ，选择服务器在的位置(我选的Miami)；运行的系统(Debian 7 x64 不要选错了)；配置(2.5美元档位) ；附加功能勾选使能 IPV6。点击最下方的 Deploy Now 就成功购买了服务器了。<br>这个2.5美元的配置属于最低的，有可能Maimi买不到，你得尝试尝试其他地点看有没有该配置。都没有就尝试5美元的吧。他这个扣费并不是一次性扣费一个月，是按照使用时长的，比如你先买了5美元的用了1个小时后发现可以买2.5美元的，那么你把这个服务器销毁了他就只扣费1个小时的钱，这点还是比较好的。</li>
+<li>点击侧边的 Servers ，在主页面就会出现你刚购买的服务器了，等到显示绿色的 running 时候就部署完成了。点击下图所指的Debian OS图标即可进入服务器的详情界面，。<br><img src="http://begild-one.top/Servers%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="Servers界面"></li>
+<li>详情界面可以看到详细的 IP、用户名、登录密码、CPU、RAM、硬盘大小、流量使用情况等等。我们主要用到用户名和密码待会远程登录需要使用。</li>
+</ol>
+<h2 id="搭建步骤2-远程登录"><a href="#搭建步骤2-远程登录" class="headerlink" title="搭建步骤2 远程登录"></a>搭建步骤2 远程登录</h2><ol>
+<li>任何一个支持远程的工具都可以，这里选择 putty <a target="_blank" rel="noopener" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">点击下载</a> 体积很小，安装选项默认就行了，位置随便你。然后会在开始菜单有一个 PuTTY 图标，点击即可打开 putty<br><img src="http://begild-one.top/putty%E6%B7%BB%E5%8A%A0%E8%BF%9E%E6%8E%A5.png" srcset="/img/loading.gif" lazyload alt="putty添加连接">  </li>
+<li>在①填服务器的IP、②填你想要保存的名字，比如科学上网；点击save保存下次就不用输入了；双击即可弹出登录窗口。可能界面比较难看，字还很小，将就一下或者自己改一下。</li>
+<li>在弹出的 login as: 填写上面服务器详情页显示的 Username (默认就是 root) ，密码填一下详情页的 Password  点击详情页那里的复制按钮即可复制，在 putty界面 右键一下自动粘贴，不需要一个一个输入，如果失败那就是你操作有问题，实在不行老老实实的输，不过这里是看不到任何的密码提示的连 * 都没有。</li>
+<li>登录成功即显示出linux终端的样式 <code>root@vultr:~#</code> 。</li>
+</ol>
+<h2 id="搭建步骤3-刷入Shadowsocks"><a href="#搭建步骤3-刷入Shadowsocks" class="headerlink" title="搭建步骤3 刷入Shadowsocks"></a>搭建步骤3 刷入Shadowsocks</h2><ol>
+<li>第一段代码，下载一键安装脚本。直接复制到 putty 里，右键直接粘贴，后回车运行即可，<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">wget --<span class="hljs-keyword">no</span>-check-certificate -O shadowsocks-<span class="hljs-keyword">all</span>.<span class="hljs-keyword">sh</span> https://raw.githubusercontent.<span class="hljs-keyword">com</span>/teddysun/shadowsocks_install/master/shadowsocks-<span class="hljs-keyword">all</span>.<span class="hljs-keyword">sh</span><br></code></pre></td></tr></table></figure>
+结果展示：<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Resolving</span> raw.githubusercontent.com (raw.githubusercontent.com)... <span class="hljs-number">151.101.4.133</span><br><span class="hljs-attribute">Connecting</span> to raw.githubusercontent.com (raw.githubusercontent.com)|<span class="hljs-number">151.101.4.133</span>|:<span class="hljs-number">443</span>... connected.<br><span class="hljs-attribute">HTTP</span> request sent, awaiting response... <span class="hljs-number">200</span> OK<br><span class="hljs-attribute">Length</span>: <span class="hljs-number">44802</span> (<span class="hljs-number">44</span>K)<span class="hljs-meta"> [text/plain]</span><br><span class="hljs-attribute">Saving</span> to: `shadowsocks-<span class="hljs-literal">all</span>.sh&#x27;<br><br><span class="hljs-attribute">100</span>%[======================================&gt;] <span class="hljs-number">44</span>,<span class="hljs-number">802</span>      --.-K/s   in <span class="hljs-number">0</span>.<span class="hljs-number">002</span>s<br><br><span class="hljs-attribute">2018</span>-<span class="hljs-number">04</span>-<span class="hljs-number">22</span> <span class="hljs-number">13</span>:<span class="hljs-number">43</span>:<span class="hljs-number">08</span> (<span class="hljs-number">17</span>.<span class="hljs-number">3</span> MB/s) - `shadowsocks-<span class="hljs-literal">all</span>.sh&#x27; saved<span class="hljs-meta"> [44802/44802]</span><br></code></pre></td></tr></table></figure></li>
+<li>第二段代码如下，赋予下载来的脚本执行权限。同样复制右键粘贴到 putty 回车运行。没有任何报错即可。<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">chmod +<span class="hljs-keyword">x</span> shadowsocks-<span class="hljs-keyword">all</span>.<span class="hljs-keyword">sh</span><br></code></pre></td></tr></table></figure></li>
+<li>第三段代码如下，执行一键安装脚本(感谢 <a target="_blank" rel="noopener" href="https://teddysun.com/">秋水逸冰</a> 提供)。<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">./shadowsocks-<span class="hljs-keyword">all</span>.<span class="hljs-keyword">sh</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee shadowsocks-<span class="hljs-keyword">all</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></li>
+<li>执行的选择过程大致如下 已经标注了需要注意的点和注释:<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs vhdl">Which Shadowsocks server you<span class="hljs-symbol">&#x27;d</span> <span class="hljs-keyword">select</span>:<br><span class="hljs-number">1</span>) Shadowsocks-Python<br><span class="hljs-number">2</span>) ShadowsocksR<br><span class="hljs-number">3</span>) Shadowsocks-Go<br><span class="hljs-number">4</span>) Shadowsocks-libev<br>Please enter a number (<span class="hljs-keyword">Default</span> Shadowsocks-Python):<span class="hljs-number">2</span> (选择 ShadowsocksR)<br><br>You choose = ShadowsocksR<br><br>Please enter password <span class="hljs-keyword">for</span> ShadowsocksR<br>(<span class="hljs-keyword">Default</span> password: teddysun.com):（密码）<br><br>password = ***<br><br>Please enter a <span class="hljs-keyword">port</span> <span class="hljs-keyword">for</span> ShadowsocksR [<span class="hljs-number">1</span>-<span class="hljs-number">65535</span>]<br>(<span class="hljs-keyword">Default</span> <span class="hljs-keyword">port</span>: <span class="hljs-number">9555</span>):（端口）<br><br><span class="hljs-keyword">port</span> = ***<br><br>Please <span class="hljs-keyword">select</span> stream cipher <span class="hljs-keyword">for</span> ShadowsocksR:<br><span class="hljs-number">1</span>) none<br><span class="hljs-number">2</span>) aes-<span class="hljs-number">256</span>-cfb<br><span class="hljs-number">3</span>) aes-<span class="hljs-number">192</span>-cfb<br><span class="hljs-number">4</span>) aes-<span class="hljs-number">128</span>-cfb<br><span class="hljs-number">5</span>) aes-<span class="hljs-number">256</span>-cfb8<br><span class="hljs-number">6</span>) aes-<span class="hljs-number">192</span>-cfb8<br><span class="hljs-number">7</span>) aes-<span class="hljs-number">128</span>-cfb8<br><span class="hljs-number">8</span>) aes-<span class="hljs-number">256</span>-ctr<br><span class="hljs-number">9</span>) aes-<span class="hljs-number">192</span>-ctr<br><span class="hljs-number">10</span>) aes-<span class="hljs-number">128</span>-ctr<br><span class="hljs-number">11</span>) chacha20-ietf<br><span class="hljs-number">12</span>) chacha20<br><span class="hljs-number">13</span>) salsa20<br><span class="hljs-number">14</span>) xchacha20<br><span class="hljs-number">15</span>) xsalsa20<br><span class="hljs-number">16</span>) rc4-md5<br>Which cipher you<span class="hljs-symbol">&#x27;d</span> <span class="hljs-keyword">select</span>(<span class="hljs-keyword">Default</span>: aes-<span class="hljs-number">256</span>-cfb):<span class="hljs-number">12</span><br>（选择chacha20 rc4-md5速度较快不过相对于aes安全性不高，chacha20效率比aes高加密性相当）<br>cipher = chacha20<br><br><br>Please <span class="hljs-keyword">select</span> protocol <span class="hljs-keyword">for</span> ShadowsocksR:<br><span class="hljs-number">1</span>) origin<br><span class="hljs-number">2</span>) verify_deflate<br><span class="hljs-number">3</span>) auth_sha1_v4<br><span class="hljs-number">4</span>) auth_sha1_v4_compatible<br><span class="hljs-number">5</span>) auth_aes128_md5<br><span class="hljs-number">6</span>) auth_aes128_sha1<br><span class="hljs-number">7</span>) auth_chain_a<br><span class="hljs-number">8</span>) auth_chain_b<br><span class="hljs-number">9</span>) auth_chain_c<br><span class="hljs-number">10</span>) auth_chain_d<br><span class="hljs-number">11</span>) auth_chain_e<br><span class="hljs-number">12</span>) auth_chain_f<br>Which protocol you<span class="hljs-symbol">&#x27;d</span> <span class="hljs-keyword">select</span>(<span class="hljs-keyword">Default</span>: origin):<span class="hljs-number">3</span><br> (使用 auth_sha1_v4 协议 较高安全性，混淆强度大)<br>protocol = auth_sha1_v4<br><br>Please <span class="hljs-keyword">select</span> obfs <span class="hljs-keyword">for</span> ShadowsocksR:<br><span class="hljs-number">1</span>) plain<br><span class="hljs-number">2</span>) http_simple<br><span class="hljs-number">3</span>) http_simple_compatible<br><span class="hljs-number">4</span>) http_post<br><span class="hljs-number">5</span>) http_post_compatible<br><span class="hljs-number">6</span>) tls1.<span class="hljs-number">2_</span>ticket_auth<br><span class="hljs-number">7</span>) tls1.<span class="hljs-number">2_</span>ticket_auth_compatible<br><span class="hljs-number">8</span>) tls1.<span class="hljs-number">2_</span>ticket_fastauth<br><span class="hljs-number">9</span>) tls1.<span class="hljs-number">2_</span>ticket_fastauth_compatible<br>Which obfs you<span class="hljs-symbol">&#x27;d</span> <span class="hljs-keyword">select</span>(<span class="hljs-keyword">Default</span>: plain):<span class="hljs-number">2</span><br>(混淆采用 http_simple)<br>obfs = http_simple<br><br>Press any key <span class="hljs-keyword">to</span> start...<span class="hljs-keyword">or</span> Press Ctrl+C <span class="hljs-keyword">to</span> cancel  (按下任意键开始刷入 ctrl+C 取消)                               <br></code></pre></td></tr></table></figure></li>
+<li>执行成功结束会吧你整个 Shadowsocks 的配置打印出来，大致如下，将这段东西复制粘贴在记事本里备份一下免得以后忘了。<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs markdown">Starting ShadowsocksR success<br><br>Congratulations, ShadowsocksR server install completed!<br>Your Server IP        :  <span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span>* （服务器IP）<br>Your Server Port      :  <span class="hljs-strong">****</span>*         （服务端口）<br>Your Password         :  <span class="hljs-strong">****</span><span class="hljs-strong">****</span>*     （使用的密码）<br>Your Protocol         :  auth<span class="hljs-emphasis">_sha1_</span>v4  （使用的协议）<br>Your obfs             :  http<span class="hljs-emphasis">_simple   （混淆协议）</span><br><span class="hljs-emphasis">Your Encryption Method:  chacha20      （加密方式）</span><br><span class="hljs-emphasis"></span><br><span class="hljs-emphasis">Your QR Code: (For ShadowsocksR Windows, Android clients only)</span><br><span class="hljs-emphasis"> ss://<span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span>**</span><br><span class="hljs-emphasis"> (SS配置信息代码，复制到小飞机右键剪切板批量导入)</span><br><span class="hljs-emphasis">Your QR Code has been saved as a PNG file path:</span><br><span class="hljs-emphasis"> /root/shadowsocks_</span>r<span class="hljs-emphasis">_qr.png</span><br><span class="hljs-emphasis"> (SS配置信息二维码)</span><br><span class="hljs-emphasis">Welcome to visit: https://teddysun.com/486.html</span><br><span class="hljs-emphasis">Enjoy it!</span><br></code></pre></td></tr></table></figure></li>
+<li>本地 SSR 客户端的配置，<a target="_blank" rel="noopener" href="https://softs.fun/?dir=%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/PC/Shadowsocks/Windows/ShadowsocksR">下载地址</a>。<ol>
+<li>下载完成之后，解压到你想放置的文件夹下就好了。会有两个启动程序 2.0 和 4.0，分别是依赖于 NET Framework v2.0 和 v4.0 ，功能无区别随便打开一个就OK。</li>
+<li>打开在任务栏会有小飞机图标显示。这时候复制上面服务器输出的 SSR 配置信息代码，也就是<code>ssr://******</code> 那一大串，全部复制。在小飞机上右键弹出的菜单里找到 <code>剪切板批量导入ssr://地址...</code> 选项，点击该选项即完成导入配置。</li>
+<li>这时候的配置大致如下，可以看到混淆参数、备注和群组都是空的。混淆方式选择的是 http_simple 的话，参数里就填你要伪装的域名，也就是你的流量会被伪装成向你填写的域名请求的流量，减少被检测的风险，我填的是<code>cdn.4g.play.cn,4gmv.music.189.cn,dl.music.189.cn</code>。备注和群组就不多说了就是一些方便分类记忆的信息(毕竟有些人有很多车)。填写完成你的整个 <code>ssr://</code> 也会改变，以后分享给别人就直接复制这个 ssr代码，别人贴上去是和你的一模一样的。<br><img src="http://begild-one.top/SSR%E5%AF%BC%E5%85%A5%E9%85%8D%E7%BD%AE.png" srcset="/img/loading.gif" lazyload alt="SSR导入配置"></li>
+</ol>
+</li>
+<li>这样就完成了搭建。访问 <a target="_blank" rel="noopener" href="https://www.google.com/ncr">Google</a> 试一下，没问题的话等下就加载出来了。</li>
+</ol>
+<h2 id="搭建步骤4-刷入锐速进行提速"><a href="#搭建步骤4-刷入锐速进行提速" class="headerlink" title="搭建步骤4 刷入锐速进行提速"></a>搭建步骤4 刷入锐速进行提速</h2><p>首先你可以尝试运行这个命令，如果没有报错。那么你很幸运不用执行下面复杂的操作。如果有报错不支持你的内核那么你就得需要执行后续的步骤。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">wget -<span class="hljs-keyword">N</span> --<span class="hljs-keyword">no</span>-check-certificate https://raw.githubusercontent.<span class="hljs-keyword">com</span>/<span class="hljs-number">91</span>yun/serverspeeder/master/serverspeeder.<span class="hljs-keyword">sh</span> &amp;&amp; bash serverspeeder.<span class="hljs-keyword">sh</span><br></code></pre></td></tr></table></figure>
+<p>错误信息大致如下:</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">===============System Info=======================<br>Debian<br>3.2.0-5-amd64<br><span class="hljs-section">x64</span><br><span class="hljs-section">=================================================</span><br>巴拉巴拉。。。<br>2018-04-22 15:05:11 (21.0 MB/s) - <span class="hljs-string">`serverspeederbin.txt&#x27;</span> saved [96179/96179]<br><br>&gt;&gt;&gt;This kernel is not supported. Trying fuzzy matching...<br><br>Serverspeeder is not supported on this kernel! View all supported systems and kernels here: https://www.91yun.org/serverspeeder91yun<br></code></pre></td></tr></table></figure>
+<p>上面代码执行出问题参照下面步骤解决。</p>
+<ol>
+<li>锐速并不是支持所有的内核，支持列表见 <a target="_blank" rel="noopener" href="https://www.91yun.co/serverspeeder91yun">锐速支持内核列表</a> 该列表里找到 Debian7 x64 部分的内核列表大致如下，该列表仅供参考，具体的到上面的链接内核支持列表里查看：<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">12</span>-<span class="hljs-number">1</span>-amd64/x64/<span class="hljs-number">3.10.54.8</span>/<span class="hljs-number">0</span>/serverspeeder_2483<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">12</span>-<span class="hljs-number">1</span>-amd64/x64/<span class="hljs-number">3.10.61.0</span>/<span class="hljs-number">0</span>/serverspeeder_2609<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64/x64/<span class="hljs-number">3.10.39.8</span>/<span class="hljs-number">0</span>/serverspeeder_2010<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64/x64/<span class="hljs-number">3.10.53.0</span>/<span class="hljs-number">0</span>/serverspeeder_2323<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64/x64/<span class="hljs-number">3.10.54.8</span>/<span class="hljs-number">0</span>/serverspeeder_2466<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64/x64/<span class="hljs-number">3.10.61.0</span>/<span class="hljs-number">0</span>/serverspeeder_2626<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64/x64/<span class="hljs-number">3.9.10.41</span>/<span class="hljs-number">0</span>/serverspeeder_1662<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">32</span>/x64/<span class="hljs-number">3.10.45.0</span>/<span class="hljs-number">0</span>/serverspeeder_2154<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">32</span>/x64/<span class="hljs-number">3.10.53.0</span>/<span class="hljs-number">0</span>/serverspeeder_2289<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">32</span>/x64/<span class="hljs-number">3.10.54.8</span>/<span class="hljs-number">0</span>/serverspeeder_2443<br><span class="hljs-attribute">Debian</span>/<span class="hljs-number">7</span>/<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">32</span>/x64/<span class="hljs-number">3.10.61.0</span>/<span class="hljs-number">0</span>/serverspeeder_2599<br></code></pre></td></tr></table></figure></li>
+<li>执行如下代码查看服务器的内核列表 。<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dpkg</span> -l|grep linux-image | awk <span class="hljs-string">&#x27;&#123;print <span class="hljs-variable">$2</span>&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+我的结果如下：<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">root</span>@vultr:~# dpkg -l|grep linux-image | awk &#x27;&#123;print $<span class="hljs-number">2</span>&#125;&#x27;<br><span class="hljs-attribute">linux</span>-image-<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64<br><span class="hljs-attribute">linux</span>-image-<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">5</span>-amd64<br><span class="hljs-attribute">linux</span>-image-amd64<br></code></pre></td></tr></table></figure></li>
+<li>锐速支持的内核列表里有3.2.0-4 所以我这里直接找到对应的链接就行了，我选了个锐速版本最高的 3.10.61.0 。如果你的内核列表里没有与锐速所支持的内核所匹配的项，那你就需要刷入一个匹配的内核。 (内核问题参照于<a target="_blank" rel="noopener" href="https://www.nbmao.com/archives/3036">笨猫博客</a>)<br>3.1 添加软件包源并更新软件包列表。<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs swift">echo <span class="hljs-operator">-</span>e <span class="hljs-string">&quot;<span class="hljs-subst">\n</span>deb http://ftp.debian.org/debian/ wheezy-backports main&quot;</span> <span class="hljs-operator">&gt;&gt;</span> <span class="hljs-regexp">/etc/</span>apt<span class="hljs-operator">/</span>sources.list<br>apt<span class="hljs-operator">-</span><span class="hljs-keyword">get</span> update<br></code></pre></td></tr></table></figure>
+3.2 查看所有的内核列表<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs subunit">root@vultr:~# aptitude search linux-image | awk &#x27;&#123;print $2&#125;&#x27;<br>结果如下：<br>linux-image<br>linux-image<span class="hljs-string">-2</span>.6-amd64<br>linux-image<span class="hljs-string">-3</span>.16.0<span class="hljs-string">-0</span>.bpo.4-amd6<br>linux-image<span class="hljs-string">-3</span>.16.0<span class="hljs-string">-0</span>.bpo.4-amd6<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-4</span>-amd64<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-4</span>-amd64-dbg<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-4</span>-rt-amd64<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-4</span>-rt-amd64-db<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-5</span>-amd64<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-5</span>-amd64-dbg<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-5</span>-rt-amd64<br>linux-image<span class="hljs-string">-3</span>.2.0<span class="hljs-string">-5</span>-rt-amd64-db<br>linux-image-amd64<br>linux-image-amd64-dbg<br>linux-image-rt-amd64<br></code></pre></td></tr></table></figure>
+3.3 选择 linux-image-3.2.0-4-amd64 进行安装,这个会下载几百M的文件，耐心等待。<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">apt</span>-get -t wheezy-backports install linux-image-<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64 -y<br></code></pre></td></tr></table></figure>
+3.4 下载安装完成之后再查看一下服务器的内核列表，有 linux-image-3.2.0-4-amd64 就OK了。</li>
+<li>卸载其他的内核版本。比如我的就卸载 <code>linux-image-3.2.0-5-amd64</code>和 <code>linux-image-amd64</code> 两个。<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> purge 其余内核名称<br></code></pre></td></tr></table></figure>
+卸载的时候会弹出一个选择框，该框是让你选择是否中断移除。一定要选择右边的取消！！！。如果出现卸载提示互斥 dkbg 被占用之类的,重启一下服务器(reboot 命令)重连 putty 再执行就OK了。</li>
+<li>更新 grub 系统引导文件并重启(会断开putty)<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">root</span>@vultr:~# update-grub &amp;&amp; reboot<br><span class="hljs-attribute">Generating</span> grub.cfg ...<br><span class="hljs-attribute">Found</span> linux image: /boot/vmlinuz-<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64<br><span class="hljs-attribute">Found</span> initrd image: /boot/initrd.img-<span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64<br><span class="hljs-attribute">done</span><br><br><span class="hljs-attribute">Broadcast</span> message from root@vultr.guest (pts/<span class="hljs-number">0</span>) (Sun Apr <span class="hljs-number">22</span> <span class="hljs-number">16</span>:<span class="hljs-number">14</span>:<span class="hljs-number">40</span> <span class="hljs-number">2018</span>):<br><span class="hljs-attribute">The</span> system is going down for reboot NOW!<br></code></pre></td></tr></table></figure></li>
+<li>当解决了内核的问题之后就到了安装了。因为经过上述步骤之后内核已经变更为 <code>linux-image-3.2.0-4-amd64</code> 所以我们执行下面的命令就可以了。如果是其他版本的内核请点击 <a target="_blank" rel="noopener" href="https://www.91yun.co/serverspeeder91yun">锐速支持内核列表</a> 找到对应项点击进去获取你的执行代码。<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> -N --no-check-certificate https://github.com/<span class="hljs-number">91</span>yun/serverspeeder/raw/master/serverspeeder-v.sh &amp;&amp; bash serverspeeder-v.sh Debian <span class="hljs-number">7</span> <span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>-<span class="hljs-number">4</span>-amd64 x64 <span class="hljs-number">3.10.61.0</span> serverspeeder_2626<br></code></pre></td></tr></table></figure>
+安装过程如下:<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">上接wget命令的输出<br>===============System Info=======================<br>Debian<br>3.2.0-4-amd64<br><span class="hljs-section">x64</span><br><span class="hljs-section">=================================================</span><br><br><br>installing ServerSpeeder, please wait for a moment...<br><br><br><span class="hljs-meta">[Running Status]</span><br>ServerSpeeder is running!<br>version              3.10.61.0<br><br><span class="hljs-meta">[License Information]</span><br>License              <span class="hljs-strong">*****</span> (valid on current device)<br>MaxSession           unlimited<br>MaxTcpAccSession     unlimited<br>MaxBandwidth(kbps)   unlimited<br>ExpireDate           2034-12-31<br><br><span class="hljs-meta">[Connection Information]</span><br>TotalFlow            1<br>NumOfTcpFlows        1<br>TotalAccTcpFlow      0<br>TotalActiveTcpFlow   0<br><br><span class="hljs-meta">[Running Configuration]</span><br>accif                eth0<br>acc                  1<br>advacc               1<br>advinacc             1<br>wankbps              10000000<br>waninkbps            10000000<br>csvmode              0<br>subnetAcc            0<br>maxmode              1<br>pcapEnable           0<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="搭建步骤5-刷入-Finalspeed-加速"><a href="#搭建步骤5-刷入-Finalspeed-加速" class="headerlink" title="搭建步骤5 刷入 Finalspeed 加速"></a>搭建步骤5 刷入 Finalspeed 加速</h2><p>FinalSpeed 根据用户设定的网络带宽省略了确认的步骤或是延长了确认的间隔，服务器按照用户设定的速率持续高速发包，所以可以达到更高的速度。不过现在改为收费使用了名字也改为 tcpspeed 想要支持一下作者使用收费版本的请点击 <a target="_blank" rel="noopener" href="http://www.tcpspeed.com/">http://www.tcpspeed.com/</a> ，省钱就使用旧版本的(作者已经删除)。91yun fork了一份并制作了一键安装包，<a target="_blank" rel="noopener" href="https://github.com/91yun/finalspeed">项目地址</a></p>
+<ol>
+<li><p>一键安装 FinalSpeed ,安装完成无报错即在运行。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">wget -<span class="hljs-keyword">N</span> --<span class="hljs-keyword">no</span>-check-certificate https://raw.githubusercontent.<span class="hljs-keyword">com</span>/<span class="hljs-number">91</span>yun/finalspeed/master/install_fs.<span class="hljs-keyword">sh</span> &amp;&amp; bash install_fs.<span class="hljs-keyword">sh</span><br></code></pre></td></tr></table></figure></li>
+<li><p>安装 FinalSpeed 客户端<br>  FinalSpeed 是双边加速，所以客户端这边也需要一个 FinalSpeed 客户端配合使用。<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/RangiLyu/finalspeed/master/finalspeed_install1.0.exe">下载地址</a> 下载下来安装就行，它需要使用 winpcap 如果没有安装会提示你安装的根据需要选择是否开机自启 winpcap ，剩下的一路 next 完成就行了。</p>
+</li>
+<li><p>配置 FinalSpeed 客户端</p>
+<ol>
+<li>在地址栏填上服务器的 IP 地址、设置带宽设置你服务器的带宽，因为测试过我的下载大概能到3000多Kb&#x2F;s，所以我这里设置的下行带宽30M，上行带宽20M(瞎设的)。</li>
+<li>点击右下的添加按钮，弹出的增加映射窗口。在名称编辑框填入你想要的描述、加速端口填你安装 SSR 时候写的端口、本地端口随便填一个，这个是用来和你的 SSR 客户端进行通信用的。填写完成自动生效的，关闭窗口就OK了。<br><img src="http://begild-one.top/FinalSpeed%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="FinalSpeed配置"></li>
+<li>配置 SSR 客户端，经过上面 SSR 的导入和配置已经可以成功 Google了。<br>1.双击任务栏小飞机图标唤出配置窗口，点击左下角的<code>添加</code>按钮可以复制一份一刚刚导入的服务器配置信息。<ol start="2">
+<li>在右边的配置栏服务器IP这里勾选显示并改为<code>127.0.0.1</code> 也就是本地回环地址。</li>
+<li>服务器端口填写为你刚刚配置 FinalSpeed 的本地端口(这里 FinalSpeed 相当于是 SSR 的服务器)。</li>
+<li>其他的重要信息不要改，备注和群组改一些方便识别。</li>
+</ol>
+</li>
+<li>这样就完成了 FinalSpeed 和 SSR 的联合配置，上网感觉可能不明显。但是看视频什么的就能看出差距了。没装 FinalSpeed 只能看 480P 装了之后，1080P 无压力。</li>
+</ol>
+</li>
+</ol>
+<h2 id="SSR-客户端的使用"><a href="#SSR-客户端的使用" class="headerlink" title="SSR 客户端的使用"></a>SSR 客户端的使用</h2><p>SSR 客户端任务栏图标右键包含了整个软件的设置。</p>
+<ol>
+<li>右键–&gt;选项设置–&gt;右上角可以设置开机启动。</li>
+<li>右键–&gt;系统代理模式 选择各种不同的代理模式，IE代理，直连，PAC和全局，PAC指的是根据 PAC 列表选择是否通过 SSR 访问。全局就是所有访问均通过 SSR。我们选择 PAC 模式配合 PAC 文件进行使用。全局的话流量较高并且国内的访问用代理反而更慢。</li>
+<li>右键–&gt;PAC 可以看到PAC的各种配置，这里给一个 PAC 文件的URL <a target="_blank" rel="noopener" href="https://softs.fun/Other/pac.txt">https://softs.fun/Other/pac.txt</a> 点击 PAC 的配置里编辑本地 PAC 文件，将上述网页里的内容全选拷贝到改文件里覆盖保存即可。</li>
+<li>右键–&gt;代理规则 使用绕过局域网和大陆。整个过程首先通过域名和 PAC 列表里匹配是否需要 SS R，如果需要 SSR 的话再通过代理规则判断该 IP 是否需要代理，如果需要的话服务器最终进行代理。</li>
+<li>右键–&gt;服务器 选择你要的服务器。按照群组和备注来区分 默认是empty-group。该设置自动保存，下次打开自动使用。</li>
+<li>其他的自己琢磨吧。可以看下<a target="_blank" rel="noopener" href="https://doub.io/ss-jc10/">这个</a></li>
+</ol>
+<h2 id="相关的一些指令"><a href="#相关的一些指令" class="headerlink" title="相关的一些指令"></a>相关的一些指令</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-type">SSR</span> 配置    vi <span class="hljs-regexp">/etc/</span>shadowsocks<span class="hljs-operator">-</span>r<span class="hljs-operator">/</span>config.json（修改后需要重启<span class="hljs-type">SS）</span><br><span class="hljs-type">SSR</span> 重启   <span class="hljs-regexp">/etc/</span><span class="hljs-keyword">init</span>.d<span class="hljs-operator">/</span>shadowsocks<span class="hljs-operator">-</span>r restart<br><span class="hljs-type">SSR</span> 状态    <span class="hljs-regexp">/etc/</span><span class="hljs-keyword">init</span>.d<span class="hljs-operator">/</span>shadowsocks<span class="hljs-operator">-</span>r status<br><span class="hljs-type">SSR</span> 卸载   <span class="hljs-operator">./</span>shadowsocks<span class="hljs-operator">-</span>all.sh uninstall<br>锐速 状态  service serverSpeeder status<br>锐速 流量速度  service serverSpeeder stats<br>锐速 卸载    chattr <span class="hljs-operator">-</span>i <span class="hljs-regexp">/serverspeeder/</span>etc<span class="hljs-regexp">/apx* &amp;&amp; /</span>serverspeeder<span class="hljs-regexp">/bin/</span>serverSpeeder.sh uninstall <span class="hljs-operator">-</span>f<br><span class="hljs-type">Finalspeed</span> 启动    <span class="hljs-regexp">/etc/</span><span class="hljs-keyword">init</span>.d<span class="hljs-operator">/</span>finalspeed start<br><span class="hljs-type">Finalspeed</span> 停止  <span class="hljs-regexp">/etc/</span><span class="hljs-keyword">init</span>.d<span class="hljs-operator">/</span>finalspeed stop<br><span class="hljs-type">Finalspeed</span> 状态   <span class="hljs-regexp">/etc/</span><span class="hljs-keyword">init</span>.d<span class="hljs-operator">/</span>finalspeed status<br><span class="hljs-type">Finalspeed</span> 卸载   bash install_fs.sh uninstall<br></code></pre></td></tr></table></figure>
+<p>如果遇到 锐速的状态查看 提示 “bc not found” 执行 <code>apt-get install bc</code> 即可。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p><img src="http://begild-one.top/%E5%A4%A9%E5%AE%89%E9%97%A8.png" srcset="/img/loading.gif" lazyload alt="天安门"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" class="print-no-link">#科学上网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>科学上Google</div>
+      <div>http://example.com/2018/04/22/KeXueShangWangJiaoCheng/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年4月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/05/10/%E5%A4%9A%E7%B3%BB%E7%BB%9Fgrub%E5%BC%95%E5%AF%BC%E4%B8%A2%E5%A4%B1%E4%BF%AE%E5%A4%8D/" title="多系统GRUB引导丢失修复">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">多系统GRUB引导丢失修复</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/04/19/Linux-Subsystem-Gui/" title="Linux子系统图形界面">
+                        <span class="hidden-mobile">Linux子系统图形界面</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

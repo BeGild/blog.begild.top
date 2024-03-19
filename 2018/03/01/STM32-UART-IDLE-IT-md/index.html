@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="识别尾进行接收结束的验证 串口接收完毕标志可以利用识别特定字符(字符串)来检测，比如 “\r\n”、’*#’ 之类的。所以每次发数据都需要加上这些字符才能被识别为接收完毕，这样好处就是比较通用。无论是什么硬件平台都能用。代码也不复杂，在STM32平台上简单的例子如下代码段：当接收到 ‘*‘ 时候就会置位接收完成标志位，就可以进行处理了。123456789101112131415161718#def">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SMT32串口接收、空闲中断">
+<meta property="og:url" content="http://example.com/2018/03/01/STM32-UART-IDLE-IT-md/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="识别尾进行接收结束的验证 串口接收完毕标志可以利用识别特定字符(字符串)来检测，比如 “\r\n”、’*#’ 之类的。所以每次发数据都需要加上这些字符才能被识别为接收完毕，这样好处就是比较通用。无论是什么硬件平台都能用。代码也不复杂，在STM32平台上简单的例子如下代码段：当接收到 ‘*‘ 时候就会置位接收完成标志位，就可以进行处理了。123456789101112131415161718#def">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-01T07:20:12.000Z">
+<meta property="article:modified_time" content="2018-04-26T05:14:42.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="串口(UART)">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>SMT32串口接收、空闲中断 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">SMT32串口接收、空闲中断</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-03-01 15:20" pubdate>
+          2018年3月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">SMT32串口接收、空闲中断</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="识别尾进行接收结束的验证"><a href="#识别尾进行接收结束的验证" class="headerlink" title="识别尾进行接收结束的验证"></a>识别尾进行接收结束的验证</h2><ol>
+<li>串口接收完毕标志可以利用识别特定字符(字符串)来检测，比如 “\r\n”、’*#’ 之类的。所以每次发数据都需要加上这些字符才能被识别为接收完毕，这样好处就是比较通用。无论是什么硬件平台都能用。代码也不复杂，在STM32平台上简单的例子如下代码段：当接收到 ‘*‘ 时候就会置位接收完成标志位，就可以进行处理了。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXUSART1BUFSIZE 200</span><br><span class="hljs-type">uint8_t</span> Uart1_BUF[MAXUSART1BUFSIZE];<br><span class="hljs-type">void</span> <span class="hljs-title function_">USART1_IRQHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> 	<span class="hljs-comment">//串口1中断服务程序               </span><br>&#123;<br>  <span class="hljs-type">uint8_t</span> RecByte;<br>  <span class="hljs-type">static</span>  <span class="hljs-type">uint32_t</span> pos = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">if</span>(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  <br>  &#123;<br>    RecByte = USART1-&gt;DR;<span class="hljs-comment">//读取接收到的数据</span><br>    <span class="hljs-keyword">if</span>(pos &lt; MAXUSART1BUFSIZE)<span class="hljs-comment">//防止内存溢出</span><br>      Uart1_BUF[pos++] = RecByte;<br>    <span class="hljs-keyword">if</span>(RecByte == <span class="hljs-string">&#x27;*&#x27;</span>)<br>    &#123;<br>      <span class="hljs-comment">//<span class="hljs-doctag">TODO:</span> 接收完毕相关处理</span><br>      pos = <span class="hljs-number">0</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<!---more---></li>
+</ol>
+<h2 id="识别头尾进行数据段的保护"><a href="#识别头尾进行数据段的保护" class="headerlink" title="识别头尾进行数据段的保护"></a>识别头尾进行数据段的保护</h2><ol start="2">
+<li>上面的方法就是发送的时候麻烦一点，每次都需要在后面加 ‘*‘, 并且如果发送错一次(忘记加 ‘*’)就会把缓冲区的内容累计到下一次(可以添加头识别进行解决)。这样就只会识别指定的数据段。一般这样适用于发送带有意义的控制数据保证数据不多收也不少收。验证的字符要保证不会出现在内容里，或者用多个字符进行验证。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXUSART1BUFSIZE 200</span><br><span class="hljs-type">uint8_t</span> Uart1_BUF[MAXUSART1BUFSIZE];<br><span class="hljs-type">void</span> <span class="hljs-title function_">USART1_IRQHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> 	<span class="hljs-comment">//串口1中断服务程序</span><br>&#123;<br>    <span class="hljs-type">uint8_t</span> RecByte;<br>    <span class="hljs-type">static</span>  <span class="hljs-type">uint32_t</span> pos = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">if</span>(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  <span class="hljs-comment">//接收中断(接收到的数据必须是0x0d 0x0a结尾)</span><br>    &#123;<br>        RecByte = USART1-&gt;DR;<span class="hljs-comment">//读取接收到的数据</span><br>        <span class="hljs-keyword">if</span>(RecByte == <span class="hljs-string">&#x27;#&#x27;</span>)<br>            pos = <span class="hljs-number">1</span>; <span class="hljs-comment">//开始接收数据</span><br>        <span class="hljs-keyword">if</span>(pos)<br>        &#123;<br>            <span class="hljs-keyword">if</span>(pos &lt; MAXUSART1BUFSIZE)<span class="hljs-comment">//防止内存溢出</span><br>                Uart1_BUF[pos - <span class="hljs-number">1</span>] = RecByte;<br>            pos ++;<br>            <span class="hljs-keyword">if</span>(RecByte == <span class="hljs-string">&#x27;*&#x27;</span>)<br>            &#123;<br>                <span class="hljs-comment">//<span class="hljs-doctag">TODO:</span> 接收完毕相关处理</span><br>                pos = <span class="hljs-number">0</span>;<br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="STM32空闲中断的配置"><a href="#STM32空闲中断的配置" class="headerlink" title="STM32空闲中断的配置"></a>STM32空闲中断的配置</h2><ol>
+<li>前几天做项目也要用到串口传输控制信息在STM32上的话可以利用串口空闲中断(接收完字符以后在下一个传输字符的时间内没有字符传来)来接收数据，这样就不用像上面那样做特定的识别，也比较方便。在这里备注一下，因为当时一开始配置完了并不起作用，后来上网查证了最后才找到解决办法。初始化的代码就不贴了，主要是最后配置完毕，开中断的代码贴一下。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">...上续初始化的相关配置<br>USART_Init(USART1, &amp;USART_InitStructure); <span class="hljs-comment">//初始化串口</span><br>USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);<span class="hljs-comment">//开启中断</span><br>USART_ITConfig(USART1, USART_IT_IDLE,ENABLE);<span class="hljs-comment">//开启中断</span><br><span class="hljs-comment">//USART_ClearITPendingBit(USART1, USART_IT_IDLE |USART_IT_RXNE);//清除中断</span><br>USART_Cmd(USART1, ENABLE);                    <span class="hljs-comment">//使能串口</span><br></code></pre></td></tr></table></figure></li>
+<li>一开始我使用的是下面这条语句进行中断配置的，发现并不能触发空闲中断，后来才知道<font color=#ff0000 size=5>必须要分两次</font>才能正确配置:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">USART_ITConfig(USART1, USART_IT_RXNE | USART_IT_IDLE, ENABLE);<span class="hljs-comment">//开启中断</span><br></code></pre></td></tr></table></figure></li>
+<li>查看了一下<font color=#00cccc size=5>USART_ITConfig()</font>函数的源码才看出来，他这个函数为了USART_IT_IDLE等中断宏定义的通用性，必须每次只能初始化一个中断标志。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">USART_ITConfig</span><span class="hljs-params">(USART_TypeDef *USARTx, <span class="hljs-type">uint16_t</span> USART_IT, FunctionalState NewState)</span><br>&#123;<br>....<br>    <span class="hljs-comment">/* Get the interrupt position */</span><br>    itpos = USART_IT &amp; IT_Mask;<br>    itmask = (((<span class="hljs-type">uint32_t</span>)<span class="hljs-number">0x01</span>) &lt;&lt; itpos);<br>....<br>&#125;<br><span class="hljs-comment">/*相关计算</span><br><span class="hljs-comment">#define USART_IT_IDLE      ((uint16_t)0x0424)</span><br><span class="hljs-comment">#define IT_Mask            ((uint16_t)0x001F)  //!&lt; USART Interrupt Mask </span><br><span class="hljs-comment">itpos = 0x0424 &amp; 0x001F = 0x04;</span><br><span class="hljs-comment">itmask = (((uint32_t)0x01) &lt;&lt; itpos) = 0x10;</span><br><span class="hljs-comment">0x10 = 0b00010000//bit[4];</span><br><span class="hljs-comment">查阅官方的手册可以看到空闲中断使能也恰好就是bit[4];</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure></li>
+<li>究其原因是因为itmask这个变量其实就是中断位于寄存器的位置，他是一个0bxx1xx的变量。只能表示一个中断标志位所以每次只能初始化一个标志位。</li>
+</ol>
+<h2 id="STM32空闲中断服务函数"><a href="#STM32空闲中断服务函数" class="headerlink" title="STM32空闲中断服务函数"></a>STM32空闲中断服务函数</h2><ol>
+<li>接下来就是中断服务函数了：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">uint8_t</span> USART1RecBuf[USART1RecBufMaxSize];<span class="hljs-comment">//接收缓冲区</span><br><span class="hljs-type">uint8_t</span> sdfsdf = <span class="hljs-number">0</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">USART1_IRQHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>      <span class="hljs-comment">//串口1中断服务程序</span><br>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-type">uint16_t</span> pos = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">if</span>(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET) <span class="hljs-comment">//接收完毕触发空闲中断</span><br>    &#123;<br>      pos = <span class="hljs-number">0</span>;<br>      USART1-&gt;DR;<span class="hljs-comment">//清除空闲中断标志位</span><br>      <span class="hljs-comment">//<span class="hljs-doctag">TODO:</span> 中断接收完成标志</span><br><br>    &#125;<br>    <span class="hljs-keyword">if</span>(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)<br>    &#123;<br>        <span class="hljs-type">uint8_t</span> RecByte;<br>        Res = USART1-&gt;DR; <span class="hljs-comment">//读取接收到的数据</span><br>        <span class="hljs-keyword">if</span>(pos &gt;= USART1RecBufMaxSize) <span class="hljs-comment">//超过范围返回</span><br>            <span class="hljs-keyword">return</span> ;<br>        USART1RecBuf[pos++] = RecByte;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>这里需要注意的就是空闲中断的清除并不是调用USART_ClearITPendingBit()函数来清除,查看库的函数源码实现也可以看到注释里并没有说明 USART_IT_IDLE 该参数是可以被传入的，并且我们使用 <font color=#00cccc size=3>USART1-&gt;DR</font> 就能清除串口空闲中断。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/**</span><br><span class="hljs-comment">...</span><br><span class="hljs-comment">  * @param  USART_IT: specifies the interrupt pending bit to clear.</span><br><span class="hljs-comment">  *   This parameter can be one of the following values:</span><br><span class="hljs-comment">  *     @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)</span><br><span class="hljs-comment">  *     @arg USART_IT_LBD:  LIN Break detection interrupt</span><br><span class="hljs-comment">  *     @arg USART_IT_TC:   Transmission complete interrupt.</span><br><span class="hljs-comment">  *     @arg USART_IT_RXNE: Receive Data register not empty interrupt.</span><br><span class="hljs-comment">...</span><br><span class="hljs-comment">  */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">USART_ClearITPendingBit</span><span class="hljs-params">(USART_TypeDef *USARTx, <span class="hljs-type">uint16_t</span> USART_IT)</span><br>&#123;<br>····<br><br></code></pre></td></tr></table></figure></li>
+<li>到此完成了串口空闲中断的配置，之后只要两次接收数据之间的时间大于一个字符的时间(跟波特率有关),就能触发这个中断。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/STM32/" class="category-chain-item">STM32</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%B8%B2%E5%8F%A3-UART/" class="print-no-link">#串口(UART)</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>SMT32串口接收、空闲中断</div>
+      <div>http://example.com/2018/03/01/STM32-UART-IDLE-IT-md/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年3月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/01/STM32-UART-CustomPrintf/" title="STM32自定义串口printf">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">STM32自定义串口printf</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/23/ESP8266%E5%B7%A5%E7%A8%8B%E7%9A%84%E8%A3%81%E5%89%AA%E5%92%8C%E7%BC%96%E8%AF%91/" title="ESP8266工程的裁剪和编译">
+                        <span class="hidden-mobile">ESP8266工程的裁剪和编译</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

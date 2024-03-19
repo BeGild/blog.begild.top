@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="渊源大概因为自己专业是通信工程，所以一直以来对通信都还是很有兴趣的，通信协议的作用就是让通信的双方明确知道通信实体的意义。通信协议的范畴太大了，从最底层的硬件之间接口的协议到最上层的应用层的协议无一不是为了传输数据所做的工作  硬件的接口协议 硬件的接口协议主要是为了正确的传输数据的逻辑0和1，在不同的物理实体接口中通过不同的电平标准，不同的时序，不同的物理线数来完成整个工作。平时接触到最多的II">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种分层、高扩展性通信协议的总结">
+<meta property="og:url" content="http://example.com/2018/07/22/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:description" content="渊源大概因为自己专业是通信工程，所以一直以来对通信都还是很有兴趣的，通信协议的作用就是让通信的双方明确知道通信实体的意义。通信协议的范畴太大了，从最底层的硬件之间接口的协议到最上层的应用层的协议无一不是为了传输数据所做的工作  硬件的接口协议 硬件的接口协议主要是为了正确的传输数据的逻辑0和1，在不同的物理实体接口中通过不同的电平标准，不同的时序，不同的物理线数来完成整个工作。平时接触到最多的II">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
+<meta property="article:published_time" content="2018-07-22T01:59:34.000Z">
+<meta property="article:modified_time" content="2018-12-04T15:37:59.000Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="串口(UART)">
+<meta property="article:tag" content="分层、高扩展通信协议">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>一种分层、高扩展性通信协议的总结 - Begild&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">一种分层、高扩展性通信协议的总结</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-07-22 09:59" pubdate>
+          2018年7月22日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一种分层、高扩展性通信协议的总结</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="渊源"><a href="#渊源" class="headerlink" title="渊源"></a>渊源</h2><p>大概因为自己专业是通信工程，所以一直以来对通信都还是很有兴趣的，通信协议的作用就是让通信的双方明确知道通信实体的意义。通信协议的范畴太大了，从最底层的硬件之间接口的协议到最上层的应用层的协议无一不是为了传输数据所做的工作 <!---more----></p>
+<h2 id="硬件的接口协议"><a href="#硬件的接口协议" class="headerlink" title="硬件的接口协议"></a>硬件的接口协议</h2><ul>
+<li>硬件的接口协议主要是为了正确的传输数据的逻辑0和1，在不同的物理实体接口中通过不同的电平标准，不同的时序，不同的物理线数来完成整个工作。平时接触到最多的IIC、SPI、UART、USB他们都有着自己一套物理层的通信接口不过线数和时序比较简单，除此之外，SATA接口，RJ45网口，HDMI接口等也有自己的一套物理层的接口协议他们的接口线数和时序通常都比较复杂。如果你不按照物理层的接口协议来传输数据那么对方连获取正确数据的能力都不具备。  </li>
+<li>当两种不同的接口间相互兼容时就需要转换器，这个转换器其实就是具备两种硬件接口协议的设备，将一种接口的数据正确接收回来转化为另外一种接口可以识别的物理电平数据然后通过时序和接口线发送出去。当然有些时候是需要进行取舍或填补的，像VGA和HDMI，他们都属于传输视频的接口，但是VGA并不具备传输音频的能力所以HDMI转VGA必然会丢失音频的数据，同时因为VGA传输的是模拟的数据当转为HDMI时必然会丢失细节数据。</li>
+<li>硬件的接口协议类比于声带和耳朵，声带发声，耳朵收听声音。声音可通过空气传播，空气就是物理线，声带和耳朵就是一套收发的物理设备，他们之间的通信通过声带震动空气发射，耳朵通过耳膜接收震动进行获取。</li>
+</ul>
+<h2 id="上层的通信协议"><a href="#上层的通信协议" class="headerlink" title="上层的通信协议"></a>上层的通信协议</h2><ul>
+<li>完成了硬件的接口协议就能正确的传输你想要发送的数据了对方也能正确的接收到你的数据，相当于你拥有一个完好的耳朵，能接收到各种符合人耳能听到的声音了(超声波次声波听不到).</li>
+<li>此时你还是语言不通！因为在你眼里都是声音但是你无法知道对面所说的是什么意思，这时候你就需要一个学习的过程，学习对方的语言。这个语言其实就是规定了各种发音的组合构成的意义也就是”通信协议”,我们只有知道每个发音以及构成的意义才能正确了解对方所说的含义.</li>
+</ul>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>促使本文产生的源头就是入职这段时间里负责的一个测试工具的开发中所用到的通信协议，因为之前自己也做过一些通信协议不过感觉看了项目组里大佬给的这个协议以及思想感觉很受用，所以在这里记录一下。这里说的是(串口)UART为通信硬件载体进行说明.</p>
+<h2 id="自己做过的一些协议"><a href="#自己做过的一些协议" class="headerlink" title="自己做过的一些协议"></a>自己做过的一些协议</h2><ul>
+<li>之前自己在本科期间做过的一些项目也需要根据传输的东西制定一些通信协议，不过都比较简单考虑的点也没有那么多，有基于16进制传输的也有基于字符串传输的16进制传输的基本就是为了机器更好识别，解析效率也会高很多。字符串为载体的传输就是为了更好的观察，更加容易分析16进制的传输比如SDH，网络音视频流等；字符串传输比如JSON，HTTP包。</li>
+<li>一个简16进制传输的控制协议，16进制传输，通过解析头尾提取出帧，但是没有差错校验。这可以当成一个数组然后分析每一部分就可以进行解析了，因为实现的功能比较简单所以也用不着很复杂。这种方式在不易调试但是数据量小并且解析较快。</li>
+</ul>
+<p>|帧头|受控设备类型|	受控设备编号|	网关设备识别号|	命令&#x2F;数据|	帧尾 |<br>| :—: | :—: | :—: | :—: | :—: | :—: | :—: |<br>|0XAA	|设备属性|网关分配|	网关|	控制和交互|0X55|<br>|8bit	|8bit|	8bit|	16bit|	8bit|	8bit|</p>
+<ul>
+<li>一个简单的字符串传输的控制协议示例,用于控制指示灯的状态，诸如充电，语音交互等模式。采用JSON为载体，方便调试和查看，但是解析效率较16进制传输低。<br> <img src="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt="JSON载体通信协议实例"></li>
+<li>其实自己做的时候也有考虑过兼容和扩展的问题，不过其实都没有很好的解决办法，因为最好的就是变长的数据传输可以任意扩展数据的大小和数据形式，但是依然没有能解决后续扩展协议和前期协议之间的潜在冲突。但是接下来的这个协议组织方式很好的解决了这个麻烦。读完下面这个协议你就会觉得之前我做的，多捞哦。</li>
+</ul>
+<h2 id="分层、高扩展协议"><a href="#分层、高扩展协议" class="headerlink" title="分层、高扩展协议"></a>分层、高扩展协议</h2><ul>
+<li><font color=#FF0FFF size=4>分层</font>：分层的思想类比于计算机网络分层，不同的层次负责不同的功能。不过这里没有那么复杂只是思想上一致，那就是将以协议帧分为不同的层次，便于数据的控制和分析。所有的数据都按1字节对齐 。</li>
+</ul>
+<ol>
+<li>顶级：控制传输层，基本包括，帧识别头、帧校验(CRC)、命令码、操作码、数据段长度、数据段载体。根据需要可以增加目的地址，源地址，返回码，消息码等用作透传和反馈的字段。其展现结构示例为：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">  <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span><br>  type Head;     <span class="hljs-comment">//帧识别头，用于标识帧的开始</span><br>  type CRC;      <span class="hljs-comment">//CRC校验，用于验证帧的完整性</span><br>  type Cmd;      <span class="hljs-comment">//命令码，用于标识帧的类型或者帧的作用</span><br><span class="hljs-comment">//  type MsgID;    //消息码，用于标识本通信协议帧的识别码。</span><br>  type Operat;   <span class="hljs-comment">//操作码，用于标识帧的一些使用操作，比如是否是需要接收方进行响应。</span><br><span class="hljs-comment">//  type SrcAddr;  //源地址，用于存储发送方的识别号，因为可能存在多个设备进行数据交互。</span><br><span class="hljs-comment">//  type DstAddr;  //目的地址，用于存储接收方的识别号，因为可能需要中间设备进行透传。</span><br><span class="hljs-comment">//  type Ret;      //返回码，用于反馈接收方的处理结果是否成功或者错误码。</span><br>  type Reserve;   <span class="hljs-comment">//预留</span><br>  type Datalen;  <span class="hljs-comment">//数据段的长度，用于进行数据段的准确读取。</span><br>  type Data[<span class="hljs-number">1</span>];  <span class="hljs-comment">//数据段的载体，这里只标识数据段的第一个字节使其内存连续，可连续读取数据。</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>二级：用于统计三级数据子包的个数，因为每个帧可能包含若干个数据包，所以需要一个统计本次数据包的总数，便于数据包的分包。这里是不需要增加数据长度字段的因为每个数据包的长度是不一定的，其展现结构示例为：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">  <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span><br>  type CellCnt;  <span class="hljs-comment">//数据细胞单元数量，用于统计三级数据细胞单元的个数</span><br>  type Data[<span class="hljs-number">1</span>];  <span class="hljs-comment">//数据段的载体，这里只标识数据段的第一个字节使其内存连续，可连续读取数据。</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>三级：在该层级用于存储每个数据细胞单元的实体，包括一个数据包意义字段，一个数据长度字段，一个数据载体字段构成。这里是必须要使用数据长度字段的，因为每个数据包的长度是不定长的但是在内存里是连续的，如果没有该字段将无法进行下一个数据包的准确读取。其展现结构示例为：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">  <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span><br>  type CellCmd;  <span class="hljs-comment">//数据细胞单元的意义或命令，用于识别该数据包的具体意义，做相应具体的操作和处理。</span><br>  type Datalen;  <span class="hljs-comment">//数据段的长度，用于进行数据段的准确读取。</span><br>  type Data[<span class="hljs-number">1</span>];  <span class="hljs-comment">//数据段的载体，这里只标识数据段的第一个字节使其内存连续，可连续读取数据。</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><font color=#FF0FFF size=4> 高扩展性 </font>：因为分层之后每一个级别都有不同的作用，顶层和二层是不会变的,但是三层的数据结构是可以自由扩展并且不影响之前的已有的功能，可以根据需要增加四级五级等等，但是对于上层来说都是三级数据包都去按照 <code>CellCmd</code> 去识别是否是自己已有的，能处理的包，不能处理就丢弃，不会影响现有的功能。</li>
+</ul>
+<h2 id="抛砖引玉"><a href="#抛砖引玉" class="headerlink" title="抛砖引玉"></a>抛砖引玉</h2><p>一开始读取这个协议的是否觉得晦涩难懂，明明就那么点功能还要大费周折，又是封装又是又是分层，解析的难度大大加大，直接用数组下标宏去解析不就OK了。<br>后来搞通了，不得不说真的太有用了，无论你是多复杂的数据结构，按照这个来组包兼容性极强，并且代码阅读更加清晰。其传输采用16进制传输，找到帧头，强制类型转化为结构体指针，然后一层一层的剖析下去，扩展的数据包解析，就依次按照剥洋葱的方式层层递减。<br>当然上面的这个只是一种思想，至于所有的数据的分层结构，体系都可以千变万化，比如二级的数据包个数就可以归在顶级里面从而取消二级结构。<br>感谢安维大佬以及盛培大哥的代码、文档</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" class="category-chain-item">通信协议</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%B8%B2%E5%8F%A3-UART/" class="print-no-link">#串口(UART)</a>
+      
+        <a href="/tags/%E5%88%86%E5%B1%82%E3%80%81%E9%AB%98%E6%89%A9%E5%B1%95%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" class="print-no-link">#分层、高扩展通信协议</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>一种分层、高扩展性通信协议的总结</div>
+      <div>http://example.com/2018/07/22/一种分层高扩展性通信协议的总结/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年7月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/19/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%92%8C%E9%85%8D%E7%BD%AE/" title="树莓派安装系统和配置">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">树莓派安装系统和配置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/05/10/%E5%A4%9A%E7%B3%BB%E7%BB%9Fgrub%E5%BC%95%E5%AF%BC%E4%B8%A2%E5%A4%B1%E4%BF%AE%E5%A4%8D/" title="多系统GRUB引导丢失修复">
+                        <span class="hidden-mobile">多系统GRUB引导丢失修复</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      粤ICP备18119049号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
