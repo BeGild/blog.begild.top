@@ -20,7 +20,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="STM32 Flash的读写">
 <meta property="og:url" content="http://example.com/2018/03/07/STM32-Flash-Write-Read/index.html">
-<meta property="og:site_name" content="Begild&#39;s blog">
+<meta property="og:site_name" content="Begild的个人分享">
 <meta property="og:description" content="这里记一下STM32F4板子FLASH的读写操作以及需要注意的地方。 FLASH的写操作 FLASH由 ‘1’ 变为 ‘0’ 不能由 ‘0’ 变为 ‘1’ ，所以在写入之间需要检测是否为 ‘1’  ,并且擦除flash只能按照一个扇区来删除，由上可知，我们写入之前必须确保我们需要写入的地址读回来的值是0XFF，如果不是0XFF就需要将整个扇区擦除(扇区变为全 ‘1’ )。 写入操作(包括擦除)之前">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-07T15:26:39.000Z">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>STM32 Flash的读写 - Begild&#39;s blog</title>
+  <title>STM32 Flash的读写 - Begild的个人分享</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -531,17 +531,6 @@
     </div>
   
   
-  
-    <!-- 备案信息 ICP for China -->
-    <div class="beian">
-  <span>
-    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
-      粤ICP备18119049号
-    </a>
-  </span>
-  
-</div>
-
   
   
 </div>
