@@ -17,8 +17,8 @@
   <meta name="keywords" content="">
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://example.com/archives/2017/09/index.html">
+<meta property="og:title" content="Begild的个人分享">
+<meta property="og:url" content="http://example.com/page/3/index.html">
 <meta property="og:site_name" content="Begild的个人分享">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Ekko bao">
@@ -28,7 +28,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>归档 - Begild的个人分享</title>
+  <title>Begild的个人分享</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -82,7 +82,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 80vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -188,13 +188,17 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">归档</span>
+            <span id="subtitle" data-typed-text="1 0 0 0 0 0 1 0 0 0"></span>
           
         </div>
 
         
       </div>
 
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
       
     </div>
   </div>
@@ -215,23 +219,75 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 21 篇文章</p>
-  <hr>
-  
-  
+
+  <div class="row mx-auto index-card">
     
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2017/09/13/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" target="_self">
+          处理器大小端存储模式
+        </a>
+      </h2>
+
       
-      <p class="h5">2017</p>
-    
-    <a href="/2017/09/13/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" class="list-group-item list-group-item-action">
-      <time>09-13</time>
-      <div class="list-group-item-title">处理器大小端存储模式</div>
-    </a>
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/09/13/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" target="_self">
+        <div>
+          大端模式：是指数据的高字节保存在内存的低地址中，而数据的低字节保存在内存的高地址中。 小端模式：是指数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中。 例如：一个数据无符号32位整数0x12345678,其中0x12属于高字节(权值大)而0x78属于低字节(权值小),在不同的模式下存储的方式如下表：    内存地址 0x1000 0x1001 0x1002 0x1003
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-09-13 17:01" pubdate>
+              2017-09-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
   
-</div>
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/c%E8%AF%AD%E8%A8%80/" class="category-chain-item">c语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%A4%A7%E5%B0%8F%E7%AB%AF%E5%AD%98%E5%82%A8/">#大小端存储</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
 
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span>
+    </span>
+  </nav>
 
 
 
@@ -308,6 +364,21 @@
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
 

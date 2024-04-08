@@ -226,6 +226,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2018/03/07/STM32-Flash-Write-Read/" target="_self">
+          STM32 Flash的读写
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/03/07/STM32-Flash-Write-Read/" target="_self">
+        <div>
+          这里记一下STM32F4板子FLASH的读写操作以及需要注意的地方。 FLASH的写操作 FLASH由 ‘1’ 变为 ‘0’ 不能由 ‘0’ 变为 ‘1’ ，所以在写入之间需要检测是否为 ‘1’  ,并且擦除flash只能按照一个扇区来删除，由上可知，我们写入之前必须确保我们需要写入的地址读回来的值是0XFF，如果不是0XFF就需要将整个扇区擦除(扇区变为全 ‘1’ )。 写入操作(包括擦除)之前
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-03-07 23:26" pubdate>
+              2018-03-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/STM32/" class="category-chain-item">STM32</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Flash%E8%AF%BB%E5%86%99/">#Flash读写</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2018/03/01/STM32-UART-CustomPrintf/" target="_self">
           STM32自定义串口printf
         </a>
@@ -741,72 +802,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2017/09/13/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" target="_self">
-          处理器大小端存储模式
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2017/09/13/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" target="_self">
-        <div>
-          大端模式：是指数据的高字节保存在内存的低地址中，而数据的低字节保存在内存的高地址中。 小端模式：是指数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中。 例如：一个数据无符号32位整数0x12345678,其中0x12属于高字节(权值大)而0x78属于低字节(权值小),在不同的模式下存储的方式如下表：    内存地址 0x1000 0x1001 0x1002 0x1003
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-09-13 17:01" pubdate>
-              2017-09-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/c%E8%AF%AD%E8%A8%80/" class="category-chain-item">c语言</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%A4%A7%E5%B0%8F%E7%AB%AF%E5%AD%98%E5%82%A8/">#大小端存储</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
