@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="Begild的个人分享">
 <meta property="og:description" content="渊源大概因为自己专业是通信工程，所以一直以来对通信都还是很有兴趣的，通信协议的作用就是让通信的双方明确知道通信实体的意义。通信协议的范畴太大了，从最底层的硬件之间接口的协议到最上层的应用层的协议无一不是为了传输数据所做的工作  硬件的接口协议 硬件的接口协议主要是为了正确的传输数据的逻辑0和1，在不同的物理实体接口中通过不同的电平标准，不同的时序，不同的物理线数来完成整个工作。平时接触到最多的II">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
+<meta property="og:image" content="http://cdn.7niu.begild.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
 <meta property="article:published_time" content="2018-07-22T01:59:34.000Z">
-<meta property="article:modified_time" content="2018-12-04T15:37:59.000Z">
+<meta property="article:modified_time" content="2024-04-11T14:52:58.425Z">
 <meta property="article:author" content="Ekko bao">
 <meta property="article:tag" content="串口(UART)">
 <meta property="article:tag" content="分层、高扩展通信协议">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
+<meta name="twitter:image" content="http://cdn.7niu.begild.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -303,7 +303,7 @@
 </ul>
 <p>|帧头|受控设备类型|	受控设备编号|	网关设备识别号|	命令&#x2F;数据|	帧尾 |<br>| :—: | :—: | :—: | :—: | :—: | :—: | :—: |<br>|0XAA	|设备属性|网关分配|	网关|	控制和交互|0X55|<br>|8bit	|8bit|	8bit|	16bit|	8bit|	8bit|</p>
 <ul>
-<li>一个简单的字符串传输的控制协议示例,用于控制指示灯的状态，诸如充电，语音交互等模式。采用JSON为载体，方便调试和查看，但是解析效率较16进制传输低。<br> <img src="http://begild-one.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt="JSON载体通信协议实例"></li>
+<li>一个简单的字符串传输的控制协议示例,用于控制指示灯的状态，诸如充电，语音交互等模式。采用JSON为载体，方便调试和查看，但是解析效率较16进制传输低。<br> <img src="http://cdn.7niu.begild.top/%E4%B8%80%E7%A7%8D%E5%88%86%E5%B1%82%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%80%BB%E7%BB%93/JSON%E5%8D%8F%E8%AE%AE%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt="JSON载体通信协议实例"></li>
 <li>其实自己做的时候也有考虑过兼容和扩展的问题，不过其实都没有很好的解决办法，因为最好的就是变长的数据传输可以任意扩展数据的大小和数据形式，但是依然没有能解决后续扩展协议和前期协议之间的潜在冲突。但是接下来的这个协议组织方式很好的解决了这个麻烦。读完下面这个协议你就会觉得之前我做的，多捞哦。</li>
 </ul>
 <h2 id="分层、高扩展协议"><a href="#分层、高扩展协议" class="headerlink" title="分层、高扩展协议"></a>分层、高扩展协议</h2><ul>
