@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ekko bao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言最近在学习RUST这门编程语言。在2,3年前了解到这门语言但是，也买了一本RUST编程指南2018版的，但是并没有系统的学习，只是翻阅了解了一下。当时是处于对这门语言的所有权和号称的安全性感兴趣来了解的，后来不了了之。最近下决心进行学习，一大部分的原因是linux内核已经接受其作为第二编程语言，说明其已经可以和C进行抗衡，或者说其在一些方面相比较C有着无法比拟的优势。C作为一个效率非常高的语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rust的异常处理学习">
+<meta property="og:url" content="http://example.com/2024/05/18/rust%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Begild的个人分享">
+<meta property="og:description" content="前言最近在学习RUST这门编程语言。在2,3年前了解到这门语言但是，也买了一本RUST编程指南2018版的，但是并没有系统的学习，只是翻阅了解了一下。当时是处于对这门语言的所有权和号称的安全性感兴趣来了解的，后来不了了之。最近下决心进行学习，一大部分的原因是linux内核已经接受其作为第二编程语言，说明其已经可以和C进行抗衡，或者说其在一些方面相比较C有着无法比拟的优势。C作为一个效率非常高的语言">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://cdn.7niu.begild.top/rust%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0/1595915215518.png">
+<meta property="article:published_time" content="2024-05-18T08:41:58.000Z">
+<meta property="article:modified_time" content="2024-05-18T14:12:22.305Z">
+<meta property="article:author" content="Ekko bao">
+<meta property="article:tag" content="rust">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://cdn.7niu.begild.top/rust%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0/1595915215518.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>rust的异常处理学习 - Begild的个人分享</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"c"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Begild</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">rust的异常处理学习</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-18 16:41" pubdate>
+          2024年5月18日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">rust的异常处理学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在学习RUST这门编程语言。<br>在2,3年前了解到这门语言但是，也买了一本RUST编程指南2018版的，但是并没有系统的学习，只是翻阅了解了一下。<br>当时是处于对这门语言的所有权和号称的安全性感兴趣来了解的，后来不了了之。<br>最近下决心进行学习，一大部分的原因是linux内核已经接受其作为第二编程语言，说明其已经可以和C进行抗衡，或者说其在一些方面相比较C有着无法比拟的优势。<br>C作为一个效率非常高的语言，在系统级编程中是首选语言，但是其指针和内存管理的灵活性导致即使是熟手也会无意中写出BUG，而避免&#x2F;减少这些BUG的方法往往都是良好的编程范式或者说习惯。那么RUST的优势是什么呢？</p>
+<p>经过一段时间的学习，在经过所有权和异常的处理之后我觉得其在安全性或者说强制你使用更好的编程习惯方面是比C有着无可比拟的优势的！<br>所有权我目前还不是理解的特别熟悉，并未到将所有权铭记于心的程度，还处于依照编译器的错误进行修改，也就是 “和编译器做斗争” 的阶段，但是我今天学了异常的处理我觉得真的非常值得做一篇笔记进行记录！！</p>
+<p>下面开始：</p>
+<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::&#123;fs::File, io::&#123;<span class="hljs-keyword">self</span>, ErrorKind, Read&#125;, net::IpAddr&#125;;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Hello, world!&quot;</span>);<br><br>    <span class="hljs-comment">/* panic 属于不可恢复的错误 */</span><br>    <span class="hljs-comment">//主动触发一个panic</span><br>    <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;crash and burn!&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在panic的时候控制台会输出很多信息，我们可以根据这些信息来获知崩溃的位置，以及调用链。<br>我们可以设置一些环境变量来决定信息的多少：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> RUST_BACKTRACE=0    <span class="hljs-comment">#关闭触发异常时的堆栈回溯。仅显示崩溃信息</span><br><span class="hljs-built_in">set</span> RUST_BACKTRACE=1    <span class="hljs-comment">#打开堆栈回溯</span><br><span class="hljs-built_in">set</span> RUST_BACKTRACE=full <span class="hljs-comment">#显示特别详细的堆栈回溯信息</span><br></code></pre></td></tr></table></figure>
+
+<p>访问其他代码触发异常 比如这里访问越界。会在vec的代码里面发生panic</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">/* thread &#x27;main&#x27; panicked at src\main.rs:9:23:</span><br><span class="hljs-comment">    index out of bounds: the len is 3 but the index is 99</span><br><span class="hljs-comment">    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">let</span> <span class="hljs-variable">var</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, var[<span class="hljs-number">99</span>]);<br></code></pre></td></tr></table></figure>
+
+<h2 id="Result的使用"><a href="#Result的使用" class="headerlink" title="Result的使用"></a>Result的使用</h2><ol>
+<li>在代码编写中可能会有一些异常的参数，值或者状态出现在代码运行时，这时候我们应该处理这些值避免进一步蔓延甚至导致panic的发生<br>处理的方式可能是纠错恢复也有可能是返回错误到更上层让其处理；</li>
+<li>也有可能是调用别人提供的功能，别人返回了错误，我们需要处理这些错误。</li>
+</ol>
+<p>在其他的语言中通常要么是通过一个返回值来判断，亦或是捕获异常并进行异常的处理，<br>但是在RUST中是没有异常的捕获处理方式的。其通过Result枚举来进行错误的承载和处理，<br>在我们的coding过程中应该按照：</p>
+<ol>
+<li>如果这个函数必定不会失败。那么返回值就是根据需要的返回值类型</li>
+<li>如果这个函数不一定会成功，那么返回值就是Result枚举，让上层必须处理可能存在的错误</li>
+<li>如果函数内部可能会发生错误，但是错误一旦出现不可恢复那么应该使用panic进行终止程序</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//尝试打开一个文件，因为文件不一定会能够打开失败，所以这里返回值Result类型我们必须要进行处理</span><br><span class="hljs-keyword">let</span> <span class="hljs-variable">f</span> = File::<span class="hljs-title function_ invoke__">open</span>(<span class="hljs-string">&quot;hello_word.txt&quot;</span>);<br><span class="hljs-comment">//这里使用match 表达式进行处理, 保证f一定是可用的</span><br><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">f</span> = <span class="hljs-keyword">match</span> f&#123;<br>    <span class="hljs-title function_ invoke__">Ok</span>(file) =&gt; file,<span class="hljs-comment">// 成功-&gt; 将文件对象作为match表达式的值进行返回</span><br>    <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; &#123;<br>        <span class="hljs-comment">//这里根据错误的类型进行处理。</span><br>        <span class="hljs-keyword">match</span> error.<span class="hljs-title function_ invoke__">kind</span>() &#123;<br>            <span class="hljs-comment">//如果文件不存在则尝试创建一个空文件, 并返回</span><br>            ErrorKind::NotFound =&gt; <span class="hljs-keyword">match</span> File::<span class="hljs-title function_ invoke__">create</span>(<span class="hljs-string">&quot;hello_word.txt&quot;</span>) &#123;<br>                <span class="hljs-title function_ invoke__">Ok</span>(file) =&gt; file,<br>                <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, error),<span class="hljs-comment">//创建失败错误直接panic</span><br>            &#125;<br>            <span class="hljs-comment">//其他类型错误直接panic</span><br>            _ =&gt;  <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, error),<br>        &#125;<br>    &#125;<br>&#125;;<br><span class="hljs-comment">//如果代码能走到这里说明f一定是可用的状态</span><br><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">buff</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br><span class="hljs-keyword">let</span> <span class="hljs-variable">_</span> = f.<span class="hljs-title function_ invoke__">read_to_string</span>(&amp;<span class="hljs-keyword">mut</span> buff);<br><br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;file conext is [&#123;&#125;]&quot;</span>, buff);<br></code></pre></td></tr></table></figure>
+
+<p>从上面可以看出对于可能会失败的接口采用Result的返回值可以使得，调用者必须处理潜在的错误，<br>保证结果是可用的，才能够进行后续的逻辑， 所以对于错误会强制你进行选择，该如何处理。</p>
+<p>比如上面的例子:<br>对于open失败的情况根据错误的类型进行差异化的处理。直到所有的错误得到正视并处理，整个open file的区块才算结束</p>
+<p>这种方式可以使得代码的错误处理分支极其完备，减少大量我们认为不会出现的异常错误，而在发生时按照非预期的流程蔓延开来。<br>不过上面match不断的嵌套是一件很痛苦的处理过程！！！</p>
+<h2 id="传播错误"><a href="#传播错误" class="headerlink" title="传播错误"></a>传播错误</h2><p>使用Result实现传播错误的通用方法！<br>这里演示了一种传播错误的方法，我们通过将函数的返回值定义为Result的方式，当我们在函数的内部实现遇到了一些问题时，我们可以将问题传播给调用者使其了解问题的信息，并交给他去决定该怎么处理，</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//定义一个函数返回值类型是Result</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">read_username_from_file</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-type">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">f</span> = File::<span class="hljs-title function_ invoke__">open</span>(<span class="hljs-string">&quot;name.txt&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">f</span> = <span class="hljs-keyword">match</span> f &#123;<br>        <span class="hljs-title function_ invoke__">Ok</span>(file) =&gt; file,<br>        <span class="hljs-comment">//如果打开失败了那么就将失败的错误传播回去</span><br>        <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(error),<br>    &#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">buff</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    <span class="hljs-keyword">match</span> f.<span class="hljs-title function_ invoke__">read_to_string</span>(&amp;<span class="hljs-keyword">mut</span> buff) &#123;<br>        <span class="hljs-comment">//如果读取失败了则也是返回一个错误</span><br>        <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(error),<br>        <span class="hljs-title function_ invoke__">Ok</span>(size) =&gt; &#123;<br>            <span class="hljs-comment">//如果size为0主动构造一个错误进行返回</span><br>            <span class="hljs-keyword">if</span> size == <span class="hljs-number">0</span> &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(io::Error::<span class="hljs-title function_ invoke__">new</span>(io::ErrorKind::Other, <span class="hljs-string">&quot;File is empty&quot;</span>));<br>            &#125;<br>        &#125;,<br>    &#125;<br>    <span class="hljs-title function_ invoke__">Ok</span>(buff)<br>&#125;<br><span class="hljs-comment">//对比之前的方式，下面这个函数的处理方式就是如果失败了返回到调用者使其进行</span><br><span class="hljs-comment">//决断，确定错误的处理方式，避免在函数内进行panic的情况。</span><br><span class="hljs-keyword">match</span> <span class="hljs-title function_ invoke__">read_username_from_file</span>() &#123;<br>    <span class="hljs-title function_ invoke__">Ok</span>(name) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name is &#123;&#125;&quot;</span>, name),<br>    <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;err happend! &#123;&#125;&quot;</span>, error),<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="问号-运算符"><a href="#问号-运算符" class="headerlink" title="? (问号) 运算符"></a>? (问号) 运算符</h2><p>即使是将错误进行传播，也需要大量的match 表达式进行匹配并处理，并且随着函数内部功能的增加，需要处理的失败的代码大大增多。<br>所以RUST提供了一个专门的运算符 ? 来减少这部分match代码的代码量，使得可以更多的专注在正常的代码逻辑上。<br><em>? 运算符可以使得，当错误发生时将错误进行Return。避免使用match表达式。</em></p>
+<p>通过这种方式可以大大减少代码量，不过其也有限制：</p>
+<ol>
+<li>这种语法必须建立在错误的类型都是一致的情况下</li>
+<li>如果错误类型不一致或者源错误不能转化为目标错误的话是不能这样使用的，</li>
+<li>另外?运算符号只能在Result或者option为返回值的函数才能够使用，否则会编译报错。</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//这是将read_username_from_file使用 ? 运算符进行简化之后的实现</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">read_username_from_file1</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-type">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">buff</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">f</span> = File::<span class="hljs-title function_ invoke__">open</span>(<span class="hljs-string">&quot;name.txt&quot;</span>)?;<span class="hljs-comment">// ? 运算符</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">size</span> = f.<span class="hljs-title function_ invoke__">read_to_string</span>(&amp;<span class="hljs-keyword">mut</span> buff)?;<span class="hljs-comment">// ? 运算符</span><br>    <span class="hljs-keyword">if</span> size == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(io::Error::<span class="hljs-title function_ invoke__">new</span>(io::ErrorKind::Other, <span class="hljs-string">&quot;File is empty&quot;</span>));<br>    &#125;<br>    <span class="hljs-title function_ invoke__">Ok</span>(buff)<br>&#125;<br><br><span class="hljs-keyword">match</span> <span class="hljs-title function_ invoke__">read_username_from_file1</span>() &#123;<br>    <span class="hljs-title function_ invoke__">Ok</span>(name) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name is &#123;&#125;&quot;</span>, name),<br>    <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;err happend! &#123;&#125;&quot;</span>, error),<br>&#125;<br><span class="hljs-comment">// 其他的Result处理方式</span><br><span class="hljs-title function_ invoke__">other_panic</span>();<br></code></pre></td></tr></table></figure>
+
+<h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><p>因为使用了?运算符可以保证如果函数可以走到后续的代码说明一定是成功了的，我们就可以肆无忌惮的使用这个结果，<br>所以可以使用链式调用来进一步缩减中间值的使用而保证一定是安全的</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//使用链式调用进一步简化代码</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">read_username_from_file2</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-type">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">buff</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    <span class="hljs-keyword">if</span> File::<span class="hljs-title function_ invoke__">open</span>(<span class="hljs-string">&quot;name.txt&quot;</span>)?.<span class="hljs-title function_ invoke__">read_to_string</span>(&amp;<span class="hljs-keyword">mut</span> buff)? == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(io::Error::<span class="hljs-title function_ invoke__">new</span>(io::ErrorKind::Other, <span class="hljs-string">&quot;File is empty&quot;</span>))<br>    &#125;<br>    <span class="hljs-title function_ invoke__">Ok</span>(buff)<br>&#125;<br><br><span class="hljs-keyword">match</span> <span class="hljs-title function_ invoke__">read_username_from_file2</span>() &#123;<br>    <span class="hljs-title function_ invoke__">Ok</span>(name) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name is &#123;&#125;&quot;</span>, name),<br>    <span class="hljs-title function_ invoke__">Err</span>(error) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;err happend! &#123;&#125;&quot;</span>, error),<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他处理异常的手段"><a href="#其他处理异常的手段" class="headerlink" title="其他处理异常的手段"></a>其他处理异常的手段</h2><p>除了主动的panic宏来进行错误检测后的主动panic。我们还有另外的panic的方式: <strong>unwrap 和 except</strong></p>
+<ol>
+<li>unwrap可以在结果为Err或者为None的时候发生panic，但是他不提供任何自定义的信息</li>
+<li>except可以附加一些信息。</li>
+</ol>
+<p>那么为什么会需要这两个东西呢，而不是通过match表达式检测异常?</p>
+<ol>
+<li>因为开发过程中在初期阶段，我们可能没办法完整处理所有的错误，因为有些组件还没准备完成</li>
+<li>亦或是这是一个简单程序。不需要那么健壮性，也不需要考虑各种异常。</li>
+<li>这就是一个测试程序，目标测试的接口函数就应该不发生任何异常。</li>
+</ol>
+<p>当我们在使用一些返回值是Result的函数接口的时候就可以使用这两个方法进行结果的检测和处理</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">other_panic</span>() &#123;<br>    <span class="hljs-comment">//我们如果知道这一定是不可能会失败的那么我们可以用unwrap来进行结果的提取，而不必理会</span><br>    <span class="hljs-comment">//比如这里我们明确他是一个常量的合法的IP地址，那么就直接使用unwrap来提取即可</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">ip</span>:IpAddr = <span class="hljs-string">&quot;127.0.0.1&quot;</span>.<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-comment">//他和下面这样是一样的效果，但是我们知道不可能失败错误就没必要这么复杂了</span><br>    <span class="hljs-comment">// let ip:IpAddr = match &quot;127.0.0.1&quot;.parse() &#123;</span><br>    <span class="hljs-comment">//     Ok(ipaddr) =&gt; ipaddr,</span><br>    <span class="hljs-comment">//     Err(error) =&gt; panic!(),</span><br>    <span class="hljs-comment">// &#125;;</span><br><br>    <span class="hljs-comment">//这是使用except的方式，可以添加一些信息</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">ip</span>:IpAddr = <span class="hljs-string">&quot;127.0.0.1&quot;</span>.<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;解析ip地址失败了&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在我看来?运算符和Result的设计简直太棒了，<br>因为按照我的开发经历来说。一个函数最好的就是返回值固定是一个状态，这个函数调用的结果对不对，也就类似OK 和 ERR的枚举变体。然后需要接口返回的数据都是通过一个指针作为出参来进行数据的返回，这样就可以用过函数返回值来判断是否调用成果，再进行后续的处理，但是这种完全取决于个人习惯！<br>而RUST将这一机制使用Result枚举来完美实现，并且配合?运算符可以更加优雅的处理！</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//c</span><br><span class="hljs-keyword">if</span> (func(param1, param2, output) == ERR) &#123;<br>    <span class="hljs-keyword">return</span> ERR;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//rust</span><br>output = <span class="hljs-title function_ invoke__">func</span>(param1, param2)?;<br></code></pre></td></tr></table></figure>
+
+<p>可以看出RUST为了保证代码的安全性，在对于错误的处理是及其苛刻的：</p>
+<ol>
+<li>不仅要求你知晓你所使用的接口函数可能会存在的错误。</li>
+<li>而且也通过语法尽可能的鼓励你使用Result来将错误不隐藏，及时传播或者处理！</li>
+<li>同时为了避免程序陷入为了处理错误而带来的大量异常处理代码，加上了?运算符大大减少了代码量。</li>
+</ol>
+<p>太厉害了</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B/" class="category-chain-item">编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rust的异常处理学习</div>
+      <div>http://example.com/2024/05/18/rust的异常处理学习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ekko bao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/18/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/" title="2024-母亲节">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2024-母亲节</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/19/%E7%94%B5%E8%84%91%E8%BF%81%E7%A7%BB%E5%90%8E%E5%BC%80%E6%9C%BA%E6%97%A0%E6%98%BE%E7%A4%BA%E8%BE%93%E5%87%BA/" title="电脑迁移后开机无显示输出">
+                        <span class="hidden-mobile">电脑迁移后开机无显示输出</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      滇ICP备2024026467号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42011102002767"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>鄂公网安备42011102002767号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
