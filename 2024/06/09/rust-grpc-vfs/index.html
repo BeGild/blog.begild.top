@@ -18,27 +18,27 @@
   
     <meta name="description" content="前言公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。 在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="rust_gRPC_vfs">
+<meta property="og:title" content="rust实现一个grpc的fuse文件系统">
 <meta property="og:url" content="http://example.com/2024/06/09/rust-grpc-vfs/index.html">
 <meta property="og:site_name" content="Begild的个人分享">
 <meta property="og:description" content="前言公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。 在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://cdn.7niu.begild.top/rust_gRPC_vfs/rust_gRPC.jpg">
+<meta property="og:image" content="http://cdn.7niu.begild.top/rust_grpc_vfs/rust_grpc.jpg">
 <meta property="article:published_time" content="2024-06-09T02:59:33.000Z">
-<meta property="article:modified_time" content="2024-06-09T05:40:59.738Z">
+<meta property="article:modified_time" content="2024-06-09T05:47:23.542Z">
 <meta property="article:author" content="Ekko bao">
 <meta property="article:tag" content="rust">
+<meta property="article:tag" content="grpc">
+<meta property="article:tag" content="fuse">
 <meta property="article:tag" content="protobuf">
-<meta property="article:tag" content="gRPC">
-<meta property="article:tag" content="FUSE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://cdn.7niu.begild.top/rust_gRPC_vfs/rust_gRPC.jpg">
+<meta name="twitter:image" content="http://cdn.7niu.begild.top/rust_grpc_vfs/rust_grpc.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>rust_gRPC_vfs - Begild的个人分享</title>
+  <title>rust实现一个grpc的fuse文件系统 - Begild的个人分享</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -204,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">rust_gRPC_vfs</span>
+            <span id="subtitle">rust实现一个grpc的fuse文件系统</span>
           
         </div>
 
@@ -283,7 +283,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">rust_gRPC_vfs</h1>
+            <h1 id="seo-header">rust实现一个grpc的fuse文件系统</h1>
             
             
               <div class="markdown-body">
@@ -304,7 +304,7 @@
 </ul>
 <p>但是他有一个严重的性能问题。python有一个全局资源锁，使得无法并发的访问。这样使得Linux这边只能挨个等待响应，严重拖慢了速度。<br>其实他在默认的bash终端还是可用的。但是一旦使用了像zsh这样的终端，他会后台执行很多的文件访问，一些插件也会进行一些探索的工作。<br>实际使用时会感受到严重的卡顿，比如git插件会不断地读取父目录以便于获知是否是一个仓库。但是每个搜索都需要互斥！。</p>
 <p>最近正好也把RUST学了。上手练练手看看。本来是想着用esp32什么的试试嵌入式开发，但是简单看了下文档开发方式和c还是差别蛮大，需要很多额外的附加规则来构造环境，所以还是先将语法学习的更熟悉一些再说。</p>
-<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>所以这其实是一个开篇，这个工具的改善版本的开篇！哈哈哈哈。<br>工具就叫sstar_rwls。</p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>所以这其实是一个开篇，这个工具的改善版本的开篇！哈哈哈哈。<br>工具就叫sstar_rwls。<br>封面是从网上随便搜的，侵删。</p>
 
                 
               </div>
@@ -340,11 +340,11 @@
       
         <a href="/tags/rust/" class="print-no-link">#rust</a>
       
+        <a href="/tags/grpc/" class="print-no-link">#grpc</a>
+      
+        <a href="/tags/fuse/" class="print-no-link">#fuse</a>
+      
         <a href="/tags/protobuf/" class="print-no-link">#protobuf</a>
-      
-        <a href="/tags/gRPC/" class="print-no-link">#gRPC</a>
-      
-        <a href="/tags/FUSE/" class="print-no-link">#FUSE</a>
       
     </div>
   
@@ -356,7 +356,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>rust_gRPC_vfs</div>
+      <div>rust实现一个grpc的fuse文件系统</div>
       <div>http://example.com/2024/06/09/rust-grpc-vfs/</div>
     </div>
     <div class="license-meta">
