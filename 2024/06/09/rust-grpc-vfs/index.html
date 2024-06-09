@@ -16,26 +16,29 @@
   <meta name="author" content="Ekko bao">
   <meta name="keywords" content="">
   
-    <meta name="description" content="希望天下的父母都健康，尽量的让自己开心一点。 这是一个迟到的生活记录，总是在拖延，不过总归是记录了，坚持！ 今天在B站看到了一个UP主分享的视频- &gt;“结婚31年，我妈想跟我爸离婚”，我是羡慕这种能够整理，顺畅表达自己感情叙事的人的。 对于我来说母亲的艰苦奋斗是尤其能够被UP的叙事所共鸣的，午休在工位上躺着不住的流泪，一方面是为自己母亲的操劳不自己心酸，同时也是母亲仍不得任何轻松的愧疚。母亲">
+    <meta name="description" content="前言公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。 在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2024-母亲节">
-<meta property="og:url" content="http://example.com/2024/05/18/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/index.html">
+<meta property="og:title" content="rust_gRPC_vfs">
+<meta property="og:url" content="http://example.com/2024/06/09/rust-grpc-vfs/index.html">
 <meta property="og:site_name" content="Begild的个人分享">
-<meta property="og:description" content="希望天下的父母都健康，尽量的让自己开心一点。 这是一个迟到的生活记录，总是在拖延，不过总归是记录了，坚持！ 今天在B站看到了一个UP主分享的视频- &gt;“结婚31年，我妈想跟我爸离婚”，我是羡慕这种能够整理，顺畅表达自己感情叙事的人的。 对于我来说母亲的艰苦奋斗是尤其能够被UP的叙事所共鸣的，午休在工位上躺着不住的流泪，一方面是为自己母亲的操劳不自己心酸，同时也是母亲仍不得任何轻松的愧疚。母亲">
+<meta property="og:description" content="前言公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。 在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://cdn.7niu.begild.top/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/index.png">
-<meta property="article:published_time" content="2024-05-18T14:13:07.000Z">
-<meta property="article:modified_time" content="2024-05-18T15:13:52.487Z">
+<meta property="og:image" content="http://cdn.7niu.begild.top/rust_gRPC_vfs/rust_gRPC.jpg">
+<meta property="article:published_time" content="2024-06-09T02:59:33.000Z">
+<meta property="article:modified_time" content="2024-06-09T05:40:59.738Z">
 <meta property="article:author" content="Ekko bao">
-<meta property="article:tag" content="母亲节">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="protobuf">
+<meta property="article:tag" content="gRPC">
+<meta property="article:tag" content="FUSE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://cdn.7niu.begild.top/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/index.png">
+<meta name="twitter:image" content="http://cdn.7niu.begild.top/rust_gRPC_vfs/rust_gRPC.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>2024-母亲节 - Begild的个人分享</title>
+  <title>rust_gRPC_vfs - Begild的个人分享</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -201,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">2024-母亲节</span>
+            <span id="subtitle">rust_gRPC_vfs</span>
           
         </div>
 
@@ -212,8 +215,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-18 22:13" pubdate>
-          2024年5月18日 晚上
+        <time datetime="2024-06-09 10:59" pubdate>
+          2024年6月9日 上午
         </time>
       </span>
     
@@ -224,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          609 字
+          1.6k 字
         
       </span>
     
@@ -235,7 +238,7 @@
         
         
         
-          6 分钟
+          14 分钟
         
       </span>
     
@@ -280,22 +283,28 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">2024-母亲节</h1>
+            <h1 id="seo-header">rust_gRPC_vfs</h1>
             
             
               <div class="markdown-body">
                 
-                <p>希望天下的父母都健康，尽量的让自己开心一点。</p>
-<p>这是一个迟到的生活记录，总是在拖延，不过总归是记录了，坚持！</p>
-<p>今天在B站看到了一个UP主分享的视频- &gt;<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PZ42177eS/?share_source=copy_web&vd_source=4fc7a210fabca83e9b54efd52c64ff56">“结婚31年，我妈想跟我爸离婚”</a>，我是羡慕这种能够整理，顺畅表达自己感情叙事的人的。</p>
-<p>对于我来说母亲的艰苦奋斗是尤其能够被UP的叙事所共鸣的，午休在工位上躺着不住的流泪，一方面是为自己母亲的操劳不自己心酸，同时也是母亲仍不得任何轻松的愧疚。<br>母亲脸朝黄土背朝天，虽然没有过多的文化但是依然穷尽一生把我们三个孩子射出大山。<br>她外强内柔，从不让我们受到欺负，睚眦必报，在哥哥小学的时候在学校里受到同学欺负，她领着扫把就去学校里横扫一片！，面对对方家长也是丝毫不落下方。</p>
-<p>在我初一的时候，从楼上摔下来摔断了手臂，休养了一个月去学校里读书，每三天母亲都会去学校看我，因为家里没钱，每次路程都需要走路至少一个半小时，翻两座大山。<br>不仅要忙完农活，而且每两个星期我们放课外假一次，因为身体比较弱，没有那么多体力，母亲都要把我从学校里背回家里，然后收假再背回去。</p>
-<p>还有其他记得的不记得的大事小事，没有文笔将其细细描述。</p>
-<p>也可惜不像UP那样有各种，照片，视频记录以往的生活。<br>我是缺乏一种对于生活点滴记录的人，是枯燥的人，所以不断地需要像UP这样的人来唤醒我们内心深处柔软的部分，<br>我觉得这也是人文社科的意义，让我们在忙碌赶路图中的不会忘记来时的路。</p>
-<p>希望今天勤劳朴实的妈妈能够感受到她自己的伟大，一个独属于母亲的伟大节日。</p>
-<p><img src="http://cdn.7niu.begild.top/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/Screenshot1.jpg" srcset="/img/loading.gif" lazyload alt="祝福"></p>
-<p>妈妈说的是方言识别不准，妈妈每次的红包的回复基本套路都是谢谢，祝你们发大财，东边发财西边发财，哈哈哈，可可爱爱。</p>
-<p><img src="http://cdn.7niu.begild.top/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/1.jpg" srcset="/img/loading.gif" lazyload alt="可爱回复"></p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。<br><img src="http://cdn.7niu.begild.top/rust_grpc_vfs/current_windows_linux_file_access_block.drawio.svg" srcset="/img/loading.gif" lazyload></p>
+<p>在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;VS Code可以建立工程使用GUI编辑代码。而不必在终端使用Vim。<br>但是对于Windows上的文件，Linux编译服务器无法直接访问，又或者本地电脑上的文件Linux编译服务器也无法访问。</p>
+<p>实际上来说本地电脑无法访问Linux服务器上的内容是合理的，因为Linux编译服务器的保密级别更高。但是Linux编译服务器无法直接访问本地电脑上的资源其实完全是因为整个链路加长之后没有现成的工具可以直接将本地电脑上的数据映射到Linux编服务器上导致。<br>而这样的访问需求其实在日常的使用过程中也是频繁会存在的，比如程序崩溃产生的core dump文件，我们希望可以在Linux编译服务器上去调试他，这一需求往往都是通过本地电脑和Windows服务器通过软件传输数据并粘贴到Linux编译服务器映射的samba网盘路径中，然后再进行gdb的调试。<br>另外一种需求就是本地电脑上的数据有时候需要和Linux服务器上的数据进行比对，已便于观察内容是否一致，这时候就不得不将数据通过繁琐的拷贝动作将文件复制到Linux编译服务器，然后使用后再删掉。</p>
+<p>这样就会导致需要设备终端软件，本地电脑的资源管理器，Windows服务器的资源管理器，Linux编译服务器的终端中，不断穿梭切换以完成这个工作内容，同时还要复制数据，产生更多的数据文件。<br>有没有什么办法可以解决这个问题呢？</p>
+<h1 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h1><p>答案是有的：就是通过远程软件的磁盘映射+Linux的FUSE文件系统+RPC来完成一个跨环境的vfs的工具，这个工具最终的效果应该是Linux编译服务器可以直接读取本地电脑或者Windows服务器上的数据，而不必重复的复制&#x2F;拖动到资源管理器。</p>
+<h2 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h2><p>Linux文件系统是kernel态进行维护的，但是为了方便开发自定义的一些文件系统，所以有了FUSE技术，可以通过user态的FUSElib来开发自定义的文件系统，从而简化了文件系统的开发复杂程度，同时也避免了文件系统异常导致kernel异常的问题。<br>从上面的框图可以看出，Windows服务器和Linux服务器之间网络是互相连通的（能够使用samba挂载Linux的文件系统）。但是Linux文件系统无法直接访问到Windows服务上的资源，而我们可以通过FUSE将这些资源化身为一个虚拟的文件系统使其能够挂载到Linux服务器的某个挂载目录，这样就可以直接在Linux终端操作这些文件。</p>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>上面所述的FUSE仅仅是提供了一个方法来访问Windows服务器上的资源。但是具体实现还需要借助RPC。RPC就是远程过程调用，我们刚刚提到一个关键点，就是将Windows服务器上的资源虚拟化为一个可以被FUSE使用的文件系统，Windows服务器和Linux服务器之间只有网络连接，而FUSE的各种api回调接口都是需要实际进行实现的，那么就通过RPC将这些调用发送到Windows这边进行调用，并将结果返回。<br>这样就实现了文件系统的构建：请求在Linux，实施在Windows服务器。<br>我们这里使用gRPC来实现。</p>
+<h2 id="磁盘映射"><a href="#磁盘映射" class="headerlink" title="磁盘映射"></a>磁盘映射</h2><p>上面的两个步骤后我们已经能够在Linux服务器访问Windows服务器文件资源，但是本地电脑上的文件资源还无法访问。这里可以通过远程桌面软件的磁盘共享功能实现，将本地电脑的磁盘挂载到Windows服务器上，这样就将本地电脑的文件映射为一个Windows服务器可以访问的磁盘，然后Linux服务器就可以访问到这些本地电脑的数据了。</p>
+<h1 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h1><p>此前已经实现了一个探索版本的实现。使用的就是Python &amp; C++来实现的。</p>
+<ul>
+<li>Windows这边呢通过python实现一个grpc的服务端；</li>
+<li>Linux服务器这边呢使用C++实现一个grpc的客户端和libfuse的虚拟文件系统。</li>
+<li>使用protobuf将fuse的api封装为message便于二者交互。</li>
+</ul>
+<p>但是他有一个严重的性能问题。python有一个全局资源锁，使得无法并发的访问。这样使得Linux这边只能挨个等待响应，严重拖慢了速度。<br>其实他在默认的bash终端还是可用的。但是一旦使用了像zsh这样的终端，他会后台执行很多的文件访问，一些插件也会进行一些探索的工作。<br>实际使用时会感受到严重的卡顿，比如git插件会不断地读取父目录以便于获知是否是一个仓库。但是每个搜索都需要互斥！。</p>
+<p>最近正好也把RUST学了。上手练练手看看。本来是想着用esp32什么的试试嵌入式开发，但是简单看了下文档开发方式和c还是差别蛮大，需要很多额外的附加规则来构造环境，所以还是先将语法学习的更熟悉一些再说。</p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>所以这其实是一个开篇，这个工具的改善版本的开篇！哈哈哈哈。<br>工具就叫sstar_rwls。</p>
 
                 
               </div>
@@ -314,7 +323,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%94%9F%E6%B4%BB/" class="category-chain-item">生活</a>
+  <a href="/categories/%E7%BC%96%E7%A8%8B/" class="category-chain-item">编程</a>
   
   
 
@@ -329,7 +338,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%AF%8D%E4%BA%B2%E8%8A%82/" class="print-no-link">#母亲节</a>
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
+      
+        <a href="/tags/protobuf/" class="print-no-link">#protobuf</a>
+      
+        <a href="/tags/gRPC/" class="print-no-link">#gRPC</a>
+      
+        <a href="/tags/FUSE/" class="print-no-link">#FUSE</a>
       
     </div>
   
@@ -341,8 +356,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>2024-母亲节</div>
-      <div>http://example.com/2024/05/18/2024-母亲节/</div>
+      <div>rust_gRPC_vfs</div>
+      <div>http://example.com/2024/06/09/rust-grpc-vfs/</div>
     </div>
     <div class="license-meta">
       
@@ -354,7 +369,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年5月18日</div>
+          <div>2024年6月9日</div>
         </div>
       
       
@@ -386,18 +401,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/06/09/rust-grpc-vfs/" title="rust_gRPC_vfs">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">rust_gRPC_vfs</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/18/rust%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0/" title="rust的异常处理学习">
-                        <span class="hidden-mobile">rust的异常处理学习</span>
+                      <a href="/2024/05/18/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/" title="2024-母亲节">
+                        <span class="hidden-mobile">2024-母亲节</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

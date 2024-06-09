@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>rust_gRPC_vfs</title>
+    <link href="/2024/06/09/rust-grpc-vfs/"/>
+    <url>/2024/06/09/rust-grpc-vfs/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>公司为了保证数据的安全一般会有这样的策略，保密级别更高的可以无限制访问保密级别低的内容。而保密级别低的一般无法访问保密级别高的内容。<br><img src="http://cdn.7niu.begild.top/rust_grpc_vfs/current_windows_linux_file_access_block.drawio.svg"></p><p>在公司里连接到Windows服务器进行编程开发，实际的代码编译服务器呢又是一个Linux服务器。我们在Windows服务器上可以通过samba或者sftp都可以浏览并修改Linux服务器上的文件。这样使得一些代码编辑器比如Source Insight&#x2F;VS Code可以建立工程使用GUI编辑代码。而不必在终端使用Vim。<br>但是对于Windows上的文件，Linux编译服务器无法直接访问，又或者本地电脑上的文件Linux编译服务器也无法访问。</p><p>实际上来说本地电脑无法访问Linux服务器上的内容是合理的，因为Linux编译服务器的保密级别更高。但是Linux编译服务器无法直接访问本地电脑上的资源其实完全是因为整个链路加长之后没有现成的工具可以直接将本地电脑上的数据映射到Linux编服务器上导致。<br>而这样的访问需求其实在日常的使用过程中也是频繁会存在的，比如程序崩溃产生的core dump文件，我们希望可以在Linux编译服务器上去调试他，这一需求往往都是通过本地电脑和Windows服务器通过软件传输数据并粘贴到Linux编译服务器映射的samba网盘路径中，然后再进行gdb的调试。<br>另外一种需求就是本地电脑上的数据有时候需要和Linux服务器上的数据进行比对，已便于观察内容是否一致，这时候就不得不将数据通过繁琐的拷贝动作将文件复制到Linux编译服务器，然后使用后再删掉。</p><p>这样就会导致需要设备终端软件，本地电脑的资源管理器，Windows服务器的资源管理器，Linux编译服务器的终端中，不断穿梭切换以完成这个工作内容，同时还要复制数据，产生更多的数据文件。<br>有没有什么办法可以解决这个问题呢？</p><h1 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h1><p>答案是有的：就是通过远程软件的磁盘映射+Linux的FUSE文件系统+RPC来完成一个跨环境的vfs的工具，这个工具最终的效果应该是Linux编译服务器可以直接读取本地电脑或者Windows服务器上的数据，而不必重复的复制&#x2F;拖动到资源管理器。</p><h2 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h2><p>Linux文件系统是kernel态进行维护的，但是为了方便开发自定义的一些文件系统，所以有了FUSE技术，可以通过user态的FUSElib来开发自定义的文件系统，从而简化了文件系统的开发复杂程度，同时也避免了文件系统异常导致kernel异常的问题。<br>从上面的框图可以看出，Windows服务器和Linux服务器之间网络是互相连通的（能够使用samba挂载Linux的文件系统）。但是Linux文件系统无法直接访问到Windows服务上的资源，而我们可以通过FUSE将这些资源化身为一个虚拟的文件系统使其能够挂载到Linux服务器的某个挂载目录，这样就可以直接在Linux终端操作这些文件。</p><h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>上面所述的FUSE仅仅是提供了一个方法来访问Windows服务器上的资源。但是具体实现还需要借助RPC。RPC就是远程过程调用，我们刚刚提到一个关键点，就是将Windows服务器上的资源虚拟化为一个可以被FUSE使用的文件系统，Windows服务器和Linux服务器之间只有网络连接，而FUSE的各种api回调接口都是需要实际进行实现的，那么就通过RPC将这些调用发送到Windows这边进行调用，并将结果返回。<br>这样就实现了文件系统的构建：请求在Linux，实施在Windows服务器。<br>我们这里使用gRPC来实现。</p><h2 id="磁盘映射"><a href="#磁盘映射" class="headerlink" title="磁盘映射"></a>磁盘映射</h2><p>上面的两个步骤后我们已经能够在Linux服务器访问Windows服务器文件资源，但是本地电脑上的文件资源还无法访问。这里可以通过远程桌面软件的磁盘共享功能实现，将本地电脑的磁盘挂载到Windows服务器上，这样就将本地电脑的文件映射为一个Windows服务器可以访问的磁盘，然后Linux服务器就可以访问到这些本地电脑的数据了。</p><h1 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h1><p>此前已经实现了一个探索版本的实现。使用的就是Python &amp; C++来实现的。</p><ul><li>Windows这边呢通过python实现一个grpc的服务端；</li><li>Linux服务器这边呢使用C++实现一个grpc的客户端和libfuse的虚拟文件系统。</li><li>使用protobuf将fuse的api封装为message便于二者交互。</li></ul><p>但是他有一个严重的性能问题。python有一个全局资源锁，使得无法并发的访问。这样使得Linux这边只能挨个等待响应，严重拖慢了速度。<br>其实他在默认的bash终端还是可用的。但是一旦使用了像zsh这样的终端，他会后台执行很多的文件访问，一些插件也会进行一些探索的工作。<br>实际使用时会感受到严重的卡顿，比如git插件会不断地读取父目录以便于获知是否是一个仓库。但是每个搜索都需要互斥！。</p><p>最近正好也把RUST学了。上手练练手看看。本来是想着用esp32什么的试试嵌入式开发，但是简单看了下文档开发方式和c还是差别蛮大，需要很多额外的附加规则来构造环境，所以还是先将语法学习的更熟悉一些再说。</p><h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>所以这其实是一个开篇，这个工具的改善版本的开篇！哈哈哈哈。<br>工具就叫sstar_rwls。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>rust</tag>
+      
+      <tag>protobuf</tag>
+      
+      <tag>gRPC</tag>
+      
+      <tag>FUSE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2024-母亲节</title>
     <link href="/2024/05/18/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/"/>
     <url>/2024/05/18/2024-%E6%AF%8D%E4%BA%B2%E8%8A%82/</url>
