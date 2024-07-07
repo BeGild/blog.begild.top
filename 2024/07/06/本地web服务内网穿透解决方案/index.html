@@ -23,16 +23,16 @@
 <meta property="og:site_name" content="Begild的个人分享">
 <meta property="og:description" content="前言前段时间搭了一个NAS：    部件 渠道 参数 价格    主板+机箱 淘宝 蜗牛星际的4盘位，J1900 8G内存，16G固态 385   硬盘 京东 两个4T西部数据红盘组一个RAID1阵列 1200   装了一个黑群晖7.X，基本的网盘功能已经组建好了，和手机电脑之间互通也没啥问题，其他的基本也就没有继续捣鼓，诸如什么影音之类的，因为搬家投影仪卖了，也没那么多时间去看。 但是话又说回来">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://cdn.7niu.begild.com/%E7%94%B5%E8%84%91%E8%BF%81%E7%A7%BB%E5%90%8E%E5%BC%80%E6%9C%BA%E6%97%A0%E6%98%BE%E7%A4%BA%E8%BE%93%E5%87%BA/%E6%90%AC%E5%AE%B6%E5%B7%A5%E4%BD%9C%E4%BD%8D%E7%BD%AE%E5%9B%BE.jpg">
+<meta property="og:image" content="https://cdn.7niu.begild.top/%E6%9C%AC%E5%9C%B0web%E6%9C%8D%E5%8A%A1%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-index.png">
 <meta property="article:published_time" content="2024-07-06T03:05:30.000Z">
-<meta property="article:modified_time" content="2024-07-07T10:17:59.237Z">
+<meta property="article:modified_time" content="2024-07-07T14:41:55.917Z">
 <meta property="article:author" content="Ekko bao">
 <meta property="article:tag" content="内网穿透">
 <meta property="article:tag" content="frp">
 <meta property="article:tag" content="nginx">
 <meta property="article:tag" content="ssl">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://cdn.7niu.begild.com/%E7%94%B5%E8%84%91%E8%BF%81%E7%A7%BB%E5%90%8E%E5%BC%80%E6%9C%BA%E6%97%A0%E6%98%BE%E7%A4%BA%E8%BE%93%E5%87%BA/%E6%90%AC%E5%AE%B6%E5%B7%A5%E4%BD%9C%E4%BD%8D%E7%BD%AE%E5%9B%BE.jpg">
+<meta name="twitter:image" content="https://cdn.7niu.begild.top/%E6%9C%AC%E5%9C%B0web%E6%9C%8D%E5%8A%A1%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-index.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -370,7 +370,7 @@
 
 <p>这样你就可以直接通过 <a target="_blank" rel="noopener" href="http://gitserver.xxx.com/">http://gitserver.xxx.com</a> 来访问到gitea server了。相比较通过 <a target="_blank" rel="noopener" href="http://43.56.67.12:44556/">http://43.56.67.12:44556</a> 是不是已经非常现代了！<br>并且在公司电脑的浏览器一样可以浏览仓库和代码，因为防火墙只能看到的是Nginx对外提供的80端口在和他通信，完全绕过了防火墙的限制！</p>
 <p>桥豆麻袋，桥豆麻袋，还没结束，正当我兴冲冲的打开终端， git pull 拉code的时候， WTF，还是不行！</p>
-<h3 id="TLS终止代理"><a href="#TLS终止代理" class="headerlink" title="TLS终止代理"></a>TLS终止代理</h3><p>难道是git另外起了其他的端口去访问吗，不应该啊，我在家也试过可以的，不需要额外的代理端口啊，老方法，wireshark上马，筛选和服务器的流量看下，发起git pull的时候会显示一个GIT协议的请求，然后后面就不行了，大意了原来是防火墙直接拦截掉了GIT的请求了，难道就要这样结束了吗？ 不不不，我还有一计！祭出我的屠龙宝刀：流量加密！。既然你识别GIT协议，那我就加密整个TCP流量，你怎么识别？</p>
+<h3 id="TLS终止代理"><a href="#TLS终止代理" class="headerlink" title="TLS终止代理"></a>TLS终止代理</h3><p>难道是git另外起了其他的端口去访问吗，不应该啊，我在家也试过可以的，不需要额外的代理端口啊！<br>老方法，wireshark上马，筛选和服务器的流量看下，发起git pull的时候会显示一个GIT协议的请求，然后后面就不行了，大意了原来是防火墙直接拦截掉了GIT的请求了，难道就要这样结束了吗？<br>不不不，我还有一计！祭出我的屠龙宝刀：流量加密！。<br>既然你识别GIT协议，那我就加密整个TCP流量，你怎么识别？</p>
 <p>先看下gitea是否支持HTTPS，是支持的，不过貌似没有必要这么彻底，我只要公司电脑到服务器是加密的即可，后续无所谓。所以为了减少改动范围，使用了Nginx来一手TLS终止代理即可。</p>
 <p>随便用openssl生成了nginx可用的证书和公钥，配置一下即可。<br>这里另外配置了重定向，让http访问也重新向到https</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sudo vim /etc/nginx/sites-available/gitea<br>server &#123;<br>    listen 80;<br>    server_name gitserver.xxx.com;<br>    <span class="hljs-built_in">return</span> 301 https://$server_name<span class="hljs-variable">$request_uri</span>;<br>&#125;<br><br>server &#123;<br>    listen 443 ssl;<br>    server_name gitserver.xxx.com;<br><br>    ssl_certificate /home/ubuntu/ssl/nginx/xxx.pem<br>    ssl_certificate_key /home/ubuntu/ssl/nginx/xxx.key;<br><br>    ssl_protocols TLSv1.2 TLSv1.3;<br>    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256;<br>    ssl_prefer_server_ciphers on;<br>    ssl_session_cache shared:SSL:10m;<br>    ssl_session_timeout 10m;<br><br>    location / &#123;<br>        proxy_pass http://localhost:44556;<br>        proxy_set_header Host <span class="hljs-variable">$host</span>;<br>        proxy_set_header X-Real-IP <span class="hljs-variable">$remote_addr</span>;<br>        proxy_set_header X-Forwarded-For <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;<br>        proxy_set_header X-Forwarded-Proto <span class="hljs-variable">$scheme</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -395,6 +395,7 @@
 </ol>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>如法炮制，我也将nas的web服务通过frp暴露给公网。<br>最后贴一下整体的架构是这个样子：</p>
 <p><img src="https://cdn.7niu.begild.top/%E6%9C%AC%E5%9C%B0web%E6%9C%8D%E5%8A%A1%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-arch.svg" srcset="/img/loading.gif" lazyload alt="本地web服务内网穿透解决方案-arch"></p>
+<p>最后的最后，封面图我是网搜来的，直接来源是这里 <a target="_blank" rel="noopener" href="https://qingsay.com/frp-nginx-ip.html">https://qingsay.com/frp-nginx-ip.html</a>. 侵删。</p>
 
                 
               </div>
